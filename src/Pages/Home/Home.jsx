@@ -1,14 +1,24 @@
-import Container from "../../Layout/Container/Container"
+import Container from "../../Layout/Container/Container";
+import Header from "../../Shared/Header";
+import Footer from "../../Shared/Footer";
+import Hero from "./Hero";
+import HowItWorks from "./HowItWorks";
+import ReadytoTransform from "./ReadytoTransform";
+import WhyChooseHomeHelp from "./WhyChooseHomeHelp";
+import WhyTrustHomeHelp from "./WhyTrustHomeHelp";
 
 const Home = () => {
   return (
     <div>
-      <h2 className="text-3xl font-bold">landing page contain goes here</h2>
-      <Container>
-          <h2 className="text-3xl font-bold">Container Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt animi alias distinctio eligendi doloremque ducimus illum? Sint harum expedita quibusdam voluptate nihil sed porro quam provident! Vitae numquam delectus quasi.</h2>
-      </Container>
+      <Header />
+      <Hero />
+      <HowItWorks />
+      <WhyTrustHomeHelp />
+      <WhyChooseHomeHelp />
+      <ReadytoTransform />
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

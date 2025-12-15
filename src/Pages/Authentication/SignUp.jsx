@@ -1,19 +1,11 @@
 import React, { useState } from "react";
 import Button from "../../Shared/Button";
 import { MdPersonOutline } from "react-icons/md";
-import { Link, useNavigate } from "react-router-dom";
-import ForgetPasswordEmail from "./ForgetPasswordEmail";
-import OTP from "./OTP";
-import NewPassword from "./NewPassword";
+import { Link } from "react-router-dom";
 
-export default function SignIn() {
+export default function SignUp() {
   const [role, setRole] = useState("owner");
   const [showPassword, setShowPassword] = useState(false);
-  const [showForget, setShowForget] = useState(false);
-  const [showOTP, setShowOTP] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [otpEmail, setOtpEmail] = useState("");
-  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f5fbfb] px-6">
@@ -65,6 +57,17 @@ export default function SignIn() {
             >
               <div>
                 <label className="block text-sm text-slate-600">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  className="w-full mt-2 px-4 py-3 rounded-lg border border-slate-100 bg-slate-50"
+                  placeholder="Your full name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-slate-600">
                   Email Address
                 </label>
                 <input
@@ -94,46 +97,24 @@ export default function SignIn() {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between text-sm">
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" className="h-4 w-4" />
-                  <span className="text-slate-600">Remember me</span>
-                </label>
-
-                <a
-                  href="#"
-                  className="text-[#18aa99]"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setShowForget(true);
-                  }}
-                >
-                  Forgot password?
-                </a>
-              </div>
-
               <div className="pt-4">
-                <Link
-                  to={role === "owner" ? "/my_properties" : "/buyer_dashboard"}
+                <Button
+                  color="blue"
+                  size="md"
+                  rounded={false}
+                  shadow
+                  className="w-full"
                 >
-                  <Button
-                    color="blue"
-                    size="md"
-                    rounded={false}
-                    shadow
-                    className="w-full"
-                  >
-                    Sign In
-                  </Button>
-                </Link>
+                  Sign Up
+                </Button>
               </div>
             </form>
-            <span className="mt-4 text-center text-sm text-slate-600 flex justify-center">
-              Don't have an account?{" "}
-              <Link to="/signup" className="text-[#18aa99]">
-                <p className="text-[#18aa99] ml-2"> Sign Up</p>
+            <div className="mt-4 text-center text-sm text-slate-600 flex justify-center">
+              Already have an account?{" "}
+              <Link to="/signin" className="text-[#18aa99] ml-2">
+                Sign In
               </Link>
-            </span>
+            </div>
           </div>
         </div>
 
@@ -148,41 +129,6 @@ export default function SignIn() {
           </div>
         </div>
       </div>
-
-      {/* Modals for forgot-password flow */}
-      {showForget && (
-        <ForgetPasswordEmail
-          onClose={() => setShowForget(false)}
-          onSent={(email) => {
-            setOtpEmail(email);
-            setShowOTP(true);
-          }}
-        />
-      )}
-
-      {showOTP && (
-        <OTP
-          onClose={() => setShowOTP(false)}
-          onVerify={(code) => {
-            // TODO: verify code via API
-            console.log("OTP verified:", code);
-            setShowOTP(false);
-            setShowNewPassword(true);
-          }}
-        />
-      )}
-
-      {showNewPassword && (
-        <NewPassword
-          onClose={() => setShowNewPassword(false)}
-          onSet={(password) => {
-            // TODO: call API to set new password
-            console.log("Password set:", password);
-            setShowNewPassword(false);
-            navigate("/signin");
-          }}
-        />
-      )}
     </div>
   );
 }
