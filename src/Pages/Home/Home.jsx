@@ -6,12 +6,14 @@ import HowItWorks from "./HowItWorks";
 import ReadytoTransform from "./ReadytoTransform";
 import WhyChooseHomeHelp from "./WhyChooseHomeHelp";
 import WhyTrustHomeHelp from "./WhyTrustHomeHelp";
+import Handshake from "./Handshake";
 
 const Home = () => {
   return (
     <div>
       <Header />
       <Hero />
+      <Handshake />
       <HowItWorks />
       <WhyTrustHomeHelp />
       <WhyChooseHomeHelp />

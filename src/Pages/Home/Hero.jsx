@@ -28,6 +28,7 @@ function Hero() {
             complete verified reports with a simple scan. Fast, secure, and
             professional.
           </p>
+          
 
           <div className="mt-8 flex items-center gap-4">
             <Button color="blue" size="md" rounded={false} shadow>
