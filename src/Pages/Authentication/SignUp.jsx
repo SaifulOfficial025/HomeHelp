@@ -1,11 +1,77 @@
 import React, { useState } from "react";
 import Button from "../../Shared/Button";
 import { MdPersonOutline } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser, verifyOTP } from "../../Redux/Signup";
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [role, setRole] = useState("owner");
   const [showPassword, setShowPassword] = useState(false);
+  const [showOTPField, setShowOTPField] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  // Form data
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    otp: "",
+  });
+
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError("");
+  };
+
+  const handleConfirm = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await registerUser(
+        formData.email,
+        formData.password,
+        role,
+        formData.fullName,
+      );
+
+      if (response.success) {
+        setSuccess(response.message);
+        setShowOTPField(true);
+      }
+    } catch (err) {
+      setError(err.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await verifyOTP(formData.email, formData.otp);
+
+      if (response.success) {
+        setSuccess("Registration completed successfully! Redirecting...");
+        setTimeout(() => {
+          navigate("/signin");
+        }, 1500);
+      }
+    } catch (err) {
+      setError(err.message || "OTP verification failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f5fbfb] px-6">
@@ -48,11 +114,20 @@ export default function SignUp() {
               </button>
             </div>
 
+            {error && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-600">
+                {success}
+              </div>
+            )}
+
             <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                // TODO: handle submit
-              }}
+              onSubmit={showOTPField ? handleSignUp : handleConfirm}
               className="mt-6 space-y-4"
             >
               <div>
@@ -61,8 +136,13 @@ export default function SignUp() {
                 </label>
                 <input
                   type="text"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
                   className="w-full mt-2 px-4 py-3 rounded-lg border border-slate-100 bg-slate-50"
                   placeholder="Your full name"
+                  required
+                  disabled={showOTPField}
                 />
               </div>
 
@@ -72,8 +152,13 @@ export default function SignUp() {
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="w-full mt-2 px-4 py-3 rounded-lg border border-slate-100 bg-slate-50"
                   placeholder="you@example.com"
+                  required
+                  disabled={showOTPField}
                 />
               </div>
 
@@ -84,30 +169,74 @@ export default function SignUp() {
                 <div className="relative mt-2">
                   <input
                     type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-lg border border-slate-100 bg-slate-50 pr-12"
                     placeholder="••••••••"
+                    required
+                    disabled={showOTPField}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                    disabled={showOTPField}
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
               </div>
 
-              <div className="pt-4">
-                <Button
-                  color="blue"
-                  size="md"
-                  rounded={false}
-                  shadow
-                  className="w-full"
-                >
-                  Sign Up
-                </Button>
-              </div>
+              {!showOTPField && (
+                <div className="pt-4">
+                  <Button
+                    type="submit"
+                    color="blue"
+                    size="md"
+                    rounded={false}
+                    shadow
+                    className="w-full"
+                    disabled={loading}
+                  >
+                    {loading ? "Sending OTP..." : "Confirm"}
+                  </Button>
+                </div>
+              )}
+
+              {showOTPField && (
+                <>
+                  <div>
+                    <label className="block text-sm text-slate-600">
+                      Enter OTP
+                    </label>
+                    <input
+                      type="text"
+                      name="otp"
+                      value={formData.otp}
+                      onChange={handleInputChange}
+                      className="w-full mt-2 px-4 py-3 rounded-lg border border-slate-100 bg-slate-50"
+                      placeholder="Enter 4-digit OTP"
+                      required
+                      maxLength="4"
+                    />
+                  </div>
+
+                  <div className="pt-4">
+                    <Button
+                      type="submit"
+                      color="blue"
+                      size="md"
+                      rounded={false}
+                      shadow
+                      className="w-full"
+                      disabled={loading}
+                    >
+                      {loading ? "Verifying..." : "Sign Up"}
+                    </Button>
+                  </div>
+                </>
+              )}
             </form>
             <div className="mt-4 text-center text-sm text-slate-600 flex justify-center">
               Already have an account?{" "}

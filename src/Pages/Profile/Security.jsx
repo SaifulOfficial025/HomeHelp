@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { changePassword } from "../../Redux/ChangePassword";
 
 function Security() {
   const [form, setForm] = useState({
@@ -12,6 +13,9 @@ function Security() {
     new: false,
     confirm: false,
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,10 +23,49 @@ function Security() {
   };
   const toggleShow = (key) => setShow((s) => ({ ...s, [key]: !s[key] }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Placeholder: wire to API
-    alert("Password updated (placeholder)");
+    setError("");
+    setSuccess("");
+
+    // Validation
+    if (!form.current || !form.new || !form.confirm) {
+      setError("All fields are required");
+      return;
+    }
+
+    if (form.new !== form.confirm) {
+      setError("New passwords do not match");
+      return;
+    }
+
+    if (form.new.length < 6) {
+      setError("New password must be at least 6 characters long");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await changePassword(form.current, form.new);
+
+      if (response.success) {
+        setSuccess("Password changed successfully!");
+        // Clear form
+        setForm({
+          current: "",
+          new: "",
+          confirm: "",
+        });
+      }
+    } catch (err) {
+      setError(
+        err.message ||
+          "Failed to change password. Please check your current password.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -34,6 +77,18 @@ function Security() {
         <p className="text-sm text-slate-500 mt-2">
           Ensure your account is secure with a strong password
         </p>
+
+        {error && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+            {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-sm text-green-600">
+            {success}
+          </div>
+        )}
 
         <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <div>
@@ -117,10 +172,11 @@ function Security() {
           <div className="pt-2">
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-[#18aa99] hover:bg-[#139a89] text-white font-semibold py-3 rounded-lg text-base transition"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-[#18aa99] hover:bg-[#139a89] text-white font-semibold py-3 rounded-lg text-base transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FaLock />
-              Update Password
+              {loading ? "Updating Password..." : "Update Password"}
             </button>
           </div>
         </form>

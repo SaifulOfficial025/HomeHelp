@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../../Shared/Button";
 import { FaStar } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Hero() {
   return (
@@ -28,23 +29,26 @@ function Hero() {
             complete verified reports with a simple scan. Fast, secure, and
             professional.
           </p>
-          
 
           <div className="mt-8 flex items-center gap-4">
-            <Button color="blue" size="md" rounded={false} shadow>
-              Get Started Free
-            </Button>
+            <Link to="/signup">
+              <Button color="blue" size="md" rounded={false} shadow>
+                Get Started Free
+              </Button>
+            </Link>
 
-            <Button
-              color="white"
-              size="md"
-              rounded={false}
-              outline
-              shadow
-              textColor="black"
-            >
-              Scan a QR
-            </Button>
+            <Link to="/scan-qr">
+              <Button
+                color="white"
+                size="md"
+                rounded={false}
+                outline
+                shadow
+                textColor="black"
+              >
+                Scan a QR
+              </Button>
+            </Link>
           </div>
 
           <div className="mt-10 grid grid-cols-3 gap-6 max-w-md">

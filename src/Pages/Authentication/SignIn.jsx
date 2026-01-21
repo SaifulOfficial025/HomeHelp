@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ForgetPasswordEmail from "./ForgetPasswordEmail";
 import OTP from "./OTP";
 import NewPassword from "./NewPassword";
+import { loginUser } from "../../Redux/Signin";
 
 export default function SignIn() {
   const [role, setRole] = useState("owner");
@@ -13,7 +14,49 @@ export default function SignIn() {
   const [showOTP, setShowOTP] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [otpEmail, setOtpEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    rememberMe: false,
+  });
   const navigate = useNavigate();
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+    setError("");
+  };
+
+  const handleSignIn = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await loginUser(formData.email, formData.password);
+
+      if (response.success && response.user) {
+        // Redirect based on user role
+        if (response.user.role === "buyer") {
+          navigate("/buyer_dashboard");
+        } else if (response.user.role === "owner") {
+          navigate("/my_properties");
+        } else {
+          // Default redirect if role doesn't match
+          navigate("/my_properties");
+        }
+      }
+    } catch (err) {
+      setError(err.message || "Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#f5fbfb] px-6">
@@ -26,7 +69,7 @@ export default function SignIn() {
               Sign in to manage your property listings
             </p>
 
-            <div className="mt-6 bg-slate-50 p-2 rounded-lg flex gap-3">
+            {/* <div className="mt-6 bg-slate-50 p-2 rounded-lg flex gap-3">
               <button
                 type="button"
                 onClick={() => setRole("owner")}
@@ -54,23 +97,27 @@ export default function SignIn() {
                 <br />
                 Buyer
               </button>
-            </div>
+            </div> */}
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                // TODO: handle submit
-              }}
-              className="mt-6 space-y-4"
-            >
+            {error && (
+              <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSignIn} className="mt-6 space-y-4">
               <div>
                 <label className="block text-sm text-slate-600">
                   Email Address
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
                   className="w-full mt-2 px-4 py-3 rounded-lg border border-slate-100 bg-slate-50"
                   placeholder="you@example.com"
+                  required
                 />
               </div>
 
@@ -81,8 +128,12 @@ export default function SignIn() {
                 <div className="relative mt-2">
                   <input
                     type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-lg border border-slate-100 bg-slate-50 pr-12"
                     placeholder="••••••••"
+                    required
                   />
                   <button
                     type="button"
@@ -96,7 +147,13 @@ export default function SignIn() {
 
               <div className="flex items-center justify-between text-sm">
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" className="h-4 w-4" />
+                  <input
+                    type="checkbox"
+                    name="rememberMe"
+                    checked={formData.rememberMe}
+                    onChange={handleInputChange}
+                    className="h-4 w-4"
+                  />
                   <span className="text-slate-600">Remember me</span>
                 </label>
 
@@ -113,19 +170,17 @@ export default function SignIn() {
               </div>
 
               <div className="pt-4">
-                <Link
-                  to={role === "owner" ? "/my_properties" : "/buyer_dashboard"}
+                <Button
+                  type="submit"
+                  color="blue"
+                  size="md"
+                  rounded={false}
+                  shadow
+                  className="w-full"
+                  disabled={loading}
                 >
-                  <Button
-                    color="blue"
-                    size="md"
-                    rounded={false}
-                    shadow
-                    className="w-full"
-                  >
-                    Sign In
-                  </Button>
-                </Link>
+                  {loading ? "Signing In..." : "Sign In"}
+                </Button>
               </div>
             </form>
             <span className="mt-4 text-center text-sm text-slate-600 flex justify-center">
@@ -155,6 +210,7 @@ export default function SignIn() {
           onClose={() => setShowForget(false)}
           onSent={(email) => {
             setOtpEmail(email);
+            setShowForget(false);
             setShowOTP(true);
           }}
         />
@@ -162,10 +218,9 @@ export default function SignIn() {
 
       {showOTP && (
         <OTP
+          email={otpEmail}
           onClose={() => setShowOTP(false)}
           onVerify={(code) => {
-            // TODO: verify code via API
-            console.log("OTP verified:", code);
             setShowOTP(false);
             setShowNewPassword(true);
           }}
@@ -174,12 +229,10 @@ export default function SignIn() {
 
       {showNewPassword && (
         <NewPassword
+          email={otpEmail}
           onClose={() => setShowNewPassword(false)}
           onSet={(password) => {
-            // TODO: call API to set new password
-            console.log("Password set:", password);
             setShowNewPassword(false);
-            navigate("/signin");
           }}
         />
       )}

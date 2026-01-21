@@ -1,15 +1,29 @@
 import React, { useState } from "react";
 import Button from "../../Shared/Button";
+import { sendForgotPasswordOTP } from "../../Redux/ForgetPassword";
 
 function ForgetPasswordEmail({ onClose, onSent }) {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
-    // TODO: call API to send OTP
-    console.log("Send OTP to", email);
-    if (onSent) onSent(email);
-    if (onClose) onClose();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await sendForgotPasswordOTP(email);
+
+      if (response.success) {
+        if (onSent) onSent(email);
+        if (onClose) onClose();
+      }
+    } catch (err) {
+      setError(err.message || "Failed to send OTP. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -39,6 +53,12 @@ function ForgetPasswordEmail({ onClose, onSent }) {
           </div>
 
           <form onSubmit={handleSend} className="mt-6">
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
             <label className="block text-sm text-slate-600 mb-2">
               Email Address
             </label>
@@ -61,8 +81,9 @@ function ForgetPasswordEmail({ onClose, onSent }) {
                 shadow
                 className="w-full"
                 type="submit"
+                disabled={loading}
               >
-                Send OTP
+                {loading ? "Sending OTP..." : "Send OTP"}
               </Button>
             </div>
           </form>

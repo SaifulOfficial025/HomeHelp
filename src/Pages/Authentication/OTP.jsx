@@ -1,9 +1,12 @@
 import React, { useRef, useState } from "react";
 import Button from "../../Shared/Button";
+import { verifyForgotPasswordOTP } from "../../Redux/ForgetPassword";
 
-function OTP({ onClose, onVerify }) {
-  const length = 6;
+function OTP({ onClose, onVerify, email }) {
+  const length = 4;
   const [values, setValues] = useState(Array(length).fill(""));
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const inputsRef = useRef([]);
 
   const focusInput = (i) => {
@@ -46,11 +49,29 @@ function OTP({ onClose, onVerify }) {
     e.preventDefault();
   };
 
-  const handleVerify = (e) => {
+  const handleVerify = async (e) => {
     e.preventDefault();
     const code = values.join("");
-    if (onVerify) onVerify(code);
-    else console.log("Verify OTP:", code);
+
+    if (code.length !== length) {
+      setError("Please enter the complete OTP");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await verifyForgotPasswordOTP(email, code);
+
+      if (response.success) {
+        if (onVerify) onVerify(code);
+      }
+    } catch (err) {
+      setError(err.message || "Invalid OTP. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -63,7 +84,7 @@ function OTP({ onClose, onVerify }) {
             <div>
               <h3 className="text-2xl font-bold text-slate-900">Enter OTP</h3>
               <p className="mt-2 text-sm text-slate-600">
-                Enter the 6-digit code we sent to your email.
+                Enter the 4-digit code we sent to your email.
               </p>
             </div>
             <button
@@ -76,6 +97,12 @@ function OTP({ onClose, onVerify }) {
           </div>
 
           <form onSubmit={handleVerify} onPaste={handlePaste} className="mt-6">
+            {error && (
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-600">
+                {error}
+              </div>
+            )}
+
             <div className="flex gap-3 justify-center">
               {Array.from({ length }).map((_, i) => (
                 <input
@@ -99,8 +126,9 @@ function OTP({ onClose, onVerify }) {
                 shadow
                 className="w-full"
                 type="submit"
+                disabled={loading}
               >
-                Verify OTP
+                {loading ? "Verifying..." : "Verify OTP"}
               </Button>
             </div>
 

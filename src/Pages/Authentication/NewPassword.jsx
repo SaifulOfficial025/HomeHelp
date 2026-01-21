@@ -1,15 +1,22 @@
 import React, { useState } from "react";
 import Button from "../../Shared/Button";
+import { resetPassword } from "../../Redux/ForgetPassword";
+import { useNavigate } from "react-router-dom";
 
-function NewPassword({ onClose, onSet }) {
+function NewPassword({ onClose, onSet, email }) {
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
+
     if (!password || !confirm) {
       setError("Please fill both fields");
       return;
@@ -18,10 +25,25 @@ function NewPassword({ onClose, onSet }) {
       setError("Passwords don't match");
       return;
     }
-    // TODO: call API to set new password
-    if (onSet) onSet(password);
-    console.log("New password set:", password);
-    if (onClose) onClose();
+
+    setLoading(true);
+
+    try {
+      const response = await resetPassword(email, password);
+
+      if (response.success) {
+        setSuccess("Password reset successfully! Redirecting to sign in...");
+        setTimeout(() => {
+          if (onSet) onSet(password);
+          if (onClose) onClose();
+          navigate("/signin");
+        }, 1500);
+      }
+    } catch (err) {
+      setError(err.message || "Failed to reset password. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -93,7 +115,17 @@ function NewPassword({ onClose, onSet }) {
               </div>
             </div>
 
-            {error && <div className="text-sm text-red-500">{error}</div>}
+            {error && (
+              <div className="text-sm text-red-500 p-3 bg-red-50 border border-red-200 rounded-lg">
+                {error}
+              </div>
+            )}
+
+            {success && (
+              <div className="text-sm text-green-500 p-3 bg-green-50 border border-green-200 rounded-lg">
+                {success}
+              </div>
+            )}
 
             <div>
               <Button
@@ -103,8 +135,9 @@ function NewPassword({ onClose, onSet }) {
                 shadow
                 className="w-full"
                 type="submit"
+                disabled={loading}
               >
-                Set New Password
+                {loading ? "Resetting Password..." : "Set New Password"}
               </Button>
             </div>
 

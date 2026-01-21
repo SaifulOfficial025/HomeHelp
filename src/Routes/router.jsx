@@ -9,6 +9,7 @@ import Profile from "../Pages/Profile/Layout";
 import BuyerDashboard from "../Pages/Buyer/Dashboard/RootPage";
 import PropertyDetailsRouter from "../Pages/Buyer/PropertyDetails.jsx/PropertyDetailsRouter";
 import PropertyDocumentation from "../Pages/Buyer/PropertyDetails.jsx/Unlocked/PropertyDocumentation/RootPage";
+import QRScanner from "../Pages/QRScanner/QRScanner";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/scan-qr",
+    element: <QRScanner />,
   },
   {
     path: "/my_properties",
