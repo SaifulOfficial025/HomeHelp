@@ -1,19 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../../../Shared/Button";
 import { Link } from "react-router-dom";
 
-function BasicPropertyInfo({ onNext = () => {} }) {
+function BasicPropertyInfo({
+  onNext = () => {},
+  initialData = {},
+  isEditMode = false,
+}) {
   const [form, setForm] = useState({
-    title: "",
-    address: "",
-    type: "",
-    bedrooms: "",
-    bathrooms: "",
-    parking: "",
-    yearBuilt: "",
-    hasPool: false,
-    isStrata: false,
+    propertyName: "",
+    propertyAddress: "",
+    propertyType: "",
+    propertyBedrooms: "",
+    propertyBathrooms: "",
+    propertyParking: "",
+    propertyBuildYear: "",
+    propertyHasPool: false,
+    propertyIsStrataProperty: false,
+    status: true,
   });
+
+  useEffect(() => {
+    if (initialData && Object.keys(initialData).length > 0) {
+      setForm(initialData);
+    }
+  }, [initialData]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -33,11 +44,11 @@ function BasicPropertyInfo({ onNext = () => {} }) {
         <div className="mt-6 space-y-4">
           <label className="block">
             <div className="text-sm text-slate-700 mb-1">
-              Property Title <span className="text-rose-500">*</span>
+              Property Name <span className="text-rose-500">*</span>
             </div>
             <input
-              name="title"
-              value={form.title}
+              name="propertyName"
+              value={form.propertyName}
               onChange={handleChange}
               placeholder="e.g., Modern Family Home with Pool"
               className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
@@ -49,8 +60,8 @@ function BasicPropertyInfo({ onNext = () => {} }) {
               Address <span className="text-rose-500">*</span>
             </div>
             <input
-              name="address"
-              value={form.address}
+              name="propertyAddress"
+              value={form.propertyAddress}
               onChange={handleChange}
               placeholder="123 Main Street, Suburb, State, Postcode"
               className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
@@ -62,10 +73,10 @@ function BasicPropertyInfo({ onNext = () => {} }) {
               Property Type <span className="text-rose-500">*</span>
             </div>
             <input
-              name="type"
-              value={form.type}
+              name="propertyType"
+              value={form.propertyType}
               onChange={handleChange}
-              placeholder="e.g., House, Apartment, Townhouse"
+              placeholder="e.g., House, Apartment, Townhouse, Villa"
               className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
             />
           </label>
@@ -74,9 +85,10 @@ function BasicPropertyInfo({ onNext = () => {} }) {
             <label className="block">
               <div className="text-xs text-slate-600 mb-1">Bedrooms</div>
               <input
-                name="bedrooms"
-                value={form.bedrooms}
+                name="propertyBedrooms"
+                value={form.propertyBedrooms}
                 onChange={handleChange}
+                placeholder="4"
                 className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
               />
             </label>
@@ -84,9 +96,10 @@ function BasicPropertyInfo({ onNext = () => {} }) {
             <label className="block">
               <div className="text-xs text-slate-600 mb-1">Bathrooms</div>
               <input
-                name="bathrooms"
-                value={form.bathrooms}
+                name="propertyBathrooms"
+                value={form.propertyBathrooms}
                 onChange={handleChange}
+                placeholder="2"
                 className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
               />
             </label>
@@ -94,9 +107,10 @@ function BasicPropertyInfo({ onNext = () => {} }) {
             <label className="block">
               <div className="text-xs text-slate-600 mb-1">Parking</div>
               <input
-                name="parking"
-                value={form.parking}
+                name="propertyParking"
+                value={form.propertyParking}
                 onChange={handleChange}
+                placeholder="2"
                 className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
               />
             </label>
@@ -106,9 +120,10 @@ function BasicPropertyInfo({ onNext = () => {} }) {
                 Year Built <span className="text-rose-500">*</span>
               </div>
               <input
-                name="yearBuilt"
-                value={form.yearBuilt}
+                name="propertyBuildYear"
+                value={form.propertyBuildYear}
                 onChange={handleChange}
+                placeholder="2020"
                 className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
               />
             </label>
@@ -122,8 +137,8 @@ function BasicPropertyInfo({ onNext = () => {} }) {
               <label className="flex items-center gap-3">
                 <input
                   type="checkbox"
-                  name="hasPool"
-                  checked={form.hasPool}
+                  name="propertyHasPool"
+                  checked={form.propertyHasPool}
                   onChange={handleChange}
                 />
                 <span>Has Pool / Spa</span>
@@ -131,11 +146,20 @@ function BasicPropertyInfo({ onNext = () => {} }) {
               <label className="flex items-center gap-3">
                 <input
                   type="checkbox"
-                  name="isStrata"
-                  checked={form.isStrata}
+                  name="propertyIsStrataProperty"
+                  checked={form.propertyIsStrataProperty}
                   onChange={handleChange}
                 />
                 <span>Is Strata Property</span>
+              </label>
+              <label className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  name="status"
+                  checked={form.status}
+                  onChange={handleChange}
+                />
+                <span>Active Status (Publicly visible)</span>
               </label>
             </div>
           </div>

@@ -5,83 +5,100 @@ import { FaRegEdit } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function PropertyCard({
-  title = "Modern Waterfront Villa",
-  address = "123 Seaside Avenue, Bondi Beach NSW 2026",
-  beds = 4,
-  baths = 3,
-  parking = 2,
-  reportsCompleted = 4,
-  reportsTotal = 4,
-  optionalCount = 2,
-  status = "Active",
-  image = "/propertydummyimage.jpg",
+  title,
+  address,
+  beds,
+  baths,
+  parking,
+  reportsCompleted,
+  reportsTotal,
+  optionalCount,
+  status,
+  image, // legacy prop
+  imageUrl, // newer prop name
+  slug, // for edit navigation
   onQR = () => {},
   onEdit = () => {},
 }) {
+  const display = (v) =>
+    v === null || v === undefined || v === "" ? "..." : v;
+  const num = (v) => (typeof v === "number" ? v : v ? Number(v) : 0);
   const progress = Math.min(
     100,
-    Math.round((reportsCompleted / Math.max(1, reportsTotal)) * 100)
+    Math.round((num(reportsCompleted) / Math.max(1, num(reportsTotal))) * 100),
   );
   const navigate = useNavigate();
+
+  const imgSrc = imageUrl || image || "/propertydummyimage.jpg";
+  const statusText =
+    typeof status === "boolean"
+      ? status
+        ? "Active"
+        : "Locked"
+      : display(status);
 
   const handleQR = () => {
     try {
       onQR();
-    } catch (e) {
-      // ignore handler errors
-    }
+    } catch (e) {}
     navigate("/qr_link");
   };
 
   const handleEdit = () => {
     try {
       onEdit();
-    } catch (e) {
-      // ignore handler errors
-    }
-    navigate("/edit_properties");
+    } catch (e) {}
+    navigate("/edit_properties", { state: { slug } });
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm h-[560px] flex flex-col">
       <div className="relative">
-        <img src={image} alt={title} className="w-full h-44 object-cover" />
+        <img
+          src={imgSrc}
+          alt={display(title)}
+          className="w-full h-48 object-cover"
+        />
         <div className="absolute left-4 top-4 bg-[#dcfce7] text-sm text-[#388c5e] px-3 py-1 rounded-full font-semibold border-[#388c5e]">
-          {status}
+          {statusText}
         </div>
       </div>
 
-      <div className="p-6">
-        <h3 className="text-2xl font-extrabold text-slate-900 leading-tight">
-          {title}
-        </h3>
-        <p className="text-sm text-slate-500 mt-2">{address}</p>
+      <div className="p-6 flex-1 flex flex-col justify-between">
+        <div>
+          <h3 className="text-2xl font-extrabold text-slate-900 leading-tight h-14 overflow-hidden">
+            {display(title)}
+          </h3>
+          <p className="text-sm text-slate-500 mt-2 h-10 overflow-hidden">
+            {display(address)}
+          </p>
 
-        <div className="mt-4 text-sm text-slate-600 flex items-center gap-3">
-          <span>{beds} beds</span>
-          <span className="mx-1">•</span>
-          <span>{baths} baths</span>
-          <span className="mx-1">•</span>
-          <span>{parking} parking</span>
-        </div>
+          <div className="mt-4 text-sm text-slate-600 flex items-center gap-3">
+            <span>{display(beds)} beds</span>
+            <span className="mx-1">•</span>
+            <span>{display(baths)} baths</span>
+            <span className="mx-1">•</span>
+            <span>{display(parking)} parking</span>
+          </div>
 
-        <div className="mt-5">
-          <div className="flex items-center justify-between text-sm text-slate-600">
-            <div>Mandatory Reports</div>
-            <div className="font-semibold text-[#00c950]">
-              {reportsCompleted}/{reportsTotal}
+          <div className="mt-5">
+            <div className="flex items-center justify-between text-sm text-slate-600">
+              <div>Mandatory Reports</div>
+              <div className="font-semibold text-[#00c950]">
+                {display(reportsCompleted)}/{display(reportsTotal)}
+              </div>
             </div>
-          </div>
 
-          <div className="w-full h-2 bg-slate-100 rounded-full mt-2">
-            <div
-              className="h-2 rounded-full bg-[#00c950]"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+            <div className="w-full h-2 bg-slate-100 rounded-full mt-2">
+              <div
+                className="h-2 rounded-full bg-[#00c950]"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
 
-          <div className="text-xs text-slate-400 mt-2">
-            +{optionalCount} optional reports
+            <div className="text-xs text-slate-400 mt-2">
+              +{display(optionalCount)} optional reports
+            </div>
           </div>
         </div>
 
