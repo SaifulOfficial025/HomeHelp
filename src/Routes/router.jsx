@@ -57,11 +57,11 @@ export const router = createBrowserRouter([
     element: <BuyerDashboard />,
   },
   {
-    path: "/property_details/:id",
+    path: "/property_details/:slug",
     element: <PropertyDetailsRouter />,
   },
   {
-    path: "/property_details/:id/property_documentation",
+    path: "/property_details/:slug/property_documentation",
     element: <PropertyDocumentation />,
   },
 ]);

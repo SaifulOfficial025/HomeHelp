@@ -1,14 +1,14 @@
 import React from "react";
 import { FaLock, FaCheckCircle } from "react-icons/fa";
 
-function LockedHero() {
-  const imageUrl =
-    "https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=800&q=80";
+function LockedHero({ property }) {
+  if (!property) return null;
+
   return (
     <div className="relative w-full h-64 md:h-96 overflow-hidden mb-20">
       <img
-        src={imageUrl}
-        alt="Elegant Family Home"
+        src={property.propertyFeatureImage || "/propertydummyimage.jpg"}
+        alt={property.propertyName}
         className="w-full h-full object-cover"
       />
       {/* Overlay */}
@@ -22,16 +22,18 @@ function LockedHero() {
           </span>
         </div>
         <div className="text-3xl md:text-4xl font-extrabold text-white mb-1">
-          Elegant Family Home
+          {property.propertyName}
         </div>
         <div className="text-white text-base mb-4">
-          XXX Oak Street, Paddington NSW 2021
+          {property.propertyAddress}
         </div>
         <div className="flex items-center gap-6 text-white text-base">
-          <span>3 beds</span>
-          <span>2 baths</span>
-          <span>2 parking</span>
-          <span>Built 2015</span>
+          <span>{property.propertyBedrooms || 0} beds</span>
+          <span>{property.propertyBathrooms || 0} baths</span>
+          <span>{property.propertyParking || 0} parking</span>
+          {property.propertyBuildYear && (
+            <span>Built {property.propertyBuildYear}</span>
+          )}
         </div>
       </div>
       {/* Locked Reports */}

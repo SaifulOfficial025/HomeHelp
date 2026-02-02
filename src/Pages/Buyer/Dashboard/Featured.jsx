@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaBed,
   FaBath,
@@ -6,23 +7,64 @@ import {
   FaChevronLeft,
   FaChevronRight,
 } from "react-icons/fa";
+import { fetchFeaturedProperties } from "../../../Redux/FeaturedProperty";
 
 function Featured() {
-  // Demo property data
-  const property = {
-    imageUrl:
-      "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-    title: "Modern Waterfront Villa",
-    address: "123 Seaside Avenue, Bondi Beach NSW 2026",
-    beds: 4,
-    baths: 3,
-    cars: 2,
-    badges: [
-      { label: "New", color: "bg-[#00c950]" },
-      { label: "Inspection Report Available", color: "bg-[#18aa99]" },
-      { label: "For Sale", color: "bg-[#f59e0b] text-slate-800" },
-    ],
+  const navigate = useNavigate();
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const loadProperties = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await fetchFeaturedProperties();
+        setProperties(data || []);
+      } catch (err) {
+        setError(err.message || "Failed to load featured properties");
+        console.error("Error loading featured properties:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProperties();
+  }, []);
+
+  const handlePrevious = () => {
+    setCurrentIndex((prev) => (prev === 0 ? properties.length - 1 : prev - 1));
   };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev === properties.length - 1 ? 0 : prev + 1));
+  };
+
+  if (loading) {
+    return (
+      <div className="px-2 md:px-8 py-8 max-w-7xl mx-auto">
+        <div className="flex items-center justify-center h-72 bg-gray-100 rounded-3xl">
+          <p className="text-slate-600">Loading featured properties...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || properties.length === 0) {
+    return (
+      <div className="px-2 md:px-8 py-8 max-w-7xl mx-auto">
+        <div className="flex items-center justify-center h-72 bg-gray-100 rounded-3xl">
+          <p className="text-slate-600">
+            {error || "No featured properties available"}
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const property = properties[currentIndex];
 
   return (
     <div className="px-2 md:px-8 py-8 max-w-7xl mx-auto">
@@ -31,18 +73,24 @@ function Featured() {
           Featured Properties
         </h2>
         <div className="flex gap-2">
-          <button className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center bg-white hover:bg-slate-100 text-slate-500">
+          <button
+            onClick={handlePrevious}
+            className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center bg-white hover:bg-slate-100 text-slate-500"
+          >
             <FaChevronLeft />
           </button>
-          <button className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center bg-white hover:bg-slate-100 text-slate-500">
+          <button
+            onClick={handleNext}
+            className="w-9 h-9 rounded-full border border-slate-200 flex items-center justify-center bg-white hover:bg-slate-100 text-slate-500"
+          >
             <FaChevronRight />
           </button>
         </div>
       </div>
       <div className="relative rounded-3xl overflow-hidden shadow-lg max-w-7xl mx-auto">
         <img
-          src={property.imageUrl}
-          alt="Featured Property"
+          src={property.propertyFeatureImage}
+          alt={property.propertyName}
           className="w-full h-72 object-cover"
         />
         {/* Overlay */}
@@ -50,38 +98,54 @@ function Featured() {
         {/* Content */}
         <div className="absolute left-0 right-0 bottom-0 p-8">
           {/* Badges */}
-          <div className="flex gap-2 mb-4">
-            {property.badges.map((badge, i) => (
-              <span
-                key={i}
-                className={`text-white text-xs font-semibold px-3 py-1 rounded-full shadow ${badge.color}`}
-              >
-                {badge.label}
+          <div className="flex gap-2 mb-4 flex-wrap">
+            {property.total_inspection_reports > 0 && (
+              <span className="text-white text-xs font-semibold px-3 py-1 rounded-full shadow bg-[#18aa99]">
+                Inspection Report Available
               </span>
-            ))}
+            )}
+            {property.status && (
+              <span className="text-white text-xs font-semibold px-3 py-1 rounded-full shadow bg-[#00c950]">
+                Listed
+              </span>
+            )}
+            {!property.is_unlocked && (
+              <span className="text-slate-800 text-xs font-semibold px-3 py-1 rounded-full shadow bg-[#f59e0b]">
+                Locked - ${property.unlock_price}
+              </span>
+            )}
           </div>
           <div className="text-2xl md:text-3xl font-extrabold text-white mb-1">
-            {property.title}
+            {property.propertyName}
           </div>
-          <div className="text-white text-base mb-4">{property.address}</div>
+          <div className="text-white text-base mb-4">
+            {property.propertyAddress}
+          </div>
           <div className="flex items-center gap-6 text-white text-lg mb-6">
             <span className="flex items-center gap-2">
-              <FaBed /> {property.beds}
+              <FaBed /> {property.propertyBedrooms}
             </span>
             <span className="flex items-center gap-2">
-              <FaBath /> {property.baths}
+              <FaBath /> {property.propertyBathrooms}
             </span>
             <span className="flex items-center gap-2">
-              <FaCar /> {property.cars}
+              <FaCar /> {property.propertyParking}
             </span>
           </div>
           <div className="flex gap-4">
-            <button className="bg-[#18aa99] hover:bg-[#139a89] text-white font-semibold px-7 py-3 rounded-lg text-base transition">
+            <button
+              onClick={() =>
+                navigate(`/property_details/${property.slug}`, {
+                  state: { locked: !property.is_unlocked },
+                })
+              }
+              className="bg-[#18aa99] hover:bg-[#139a89] text-white font-semibold px-7 py-3 rounded-lg text-base transition"
+            >
               View Details
             </button>
-            <button className="  text-white font-semibold px-7 py-3 rounded-lg text-base border border-slate-300 transition hover:bg-slate-100 hover:text-slate-800">
+            {/* <button className="text-white font-semibold px-7 py-3 rounded-lg text-base border border-slate-300 transition hover:bg-slate-100 hover:text-slate-800">
               Book Inspection
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

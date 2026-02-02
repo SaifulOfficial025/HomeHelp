@@ -24,7 +24,7 @@ function QRandPropertyLink({
     const w = window.open("", "_blank");
     if (!w) return;
     w.document.write(
-      `<img src="${qrSrc}" style="max-width:100%;height:auto;"/>`
+      `<img src="${qrSrc}" style="max-width:100%;height:auto;"/>`,
     );
     w.document.close();
     w.focus();
@@ -90,7 +90,7 @@ function QRandPropertyLink({
             <FiDownload />
             Download PNG
           </Button>
-
+          {/* 
           <Button
             color="white"
             size="md"
@@ -103,7 +103,7 @@ function QRandPropertyLink({
           >
             <MdLocalPrintshop />
             Print A4 Sheet
-          </Button>
+          </Button> */}
 
           <Button
             color="white"

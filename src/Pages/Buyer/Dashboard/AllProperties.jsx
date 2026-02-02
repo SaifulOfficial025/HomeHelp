@@ -59,6 +59,8 @@ function AllProperties() {
           {properties.map((property) => (
             <PropertyCard
               key={property.id}
+              propertyId={property.id}
+              slug={property.slug}
               title={property.propertyName}
               address={property.propertyAddress}
               imageUrl={property.propertyFeatureImage}
@@ -69,6 +71,7 @@ function AllProperties() {
               reportsTotal={4}
               optionalCount={property.total_optional_reports}
               status={property.status}
+              isLocked={!property.is_unlocked}
             />
           ))}
         </div>

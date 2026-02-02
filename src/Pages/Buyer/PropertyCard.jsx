@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   FaHeart,
   FaBed,
@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { IoIosTrendingDown } from "react-icons/io";
+import { addPropertyBookmark } from "../../Redux/Bookmark";
 
 function PropertyCard(props) {
   const {
@@ -24,18 +25,45 @@ function PropertyCard(props) {
     priceDrop,
     favorite,
     locked,
-    id = "0",
+    isLocked,
+    slug = "",
+    propertyId = "",
   } = props;
 
   const navigate = useNavigate();
+  const [isBookmarked, setIsBookmarked] = useState(favorite || false);
+  const [bookmarkLoading, setBookmarkLoading] = useState(false);
+  const [toast, setToast] = useState("");
+
+  // Use isLocked prop if provided, otherwise fall back to locked
+  const isPropertyLocked = isLocked !== undefined ? isLocked : locked;
+
+  const handleBookmark = async (e) => {
+    e.stopPropagation();
+
+    if (!propertyId) return;
+
+    setBookmarkLoading(true);
+    try {
+      await addPropertyBookmark(propertyId);
+      setIsBookmarked(true);
+      setToast("✓ Property added to bookmarks");
+      setTimeout(() => setToast(""), 4000);
+    } catch (err) {
+      setToast(err.message || "Failed to bookmark property");
+      setTimeout(() => setToast(""), 4000);
+    } finally {
+      setBookmarkLoading(false);
+    }
+  };
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg overflow-hidden max-w-md mx-auto relative">
-      <div className="relative">
+    <div className="bg-white rounded-3xl shadow-lg overflow-hidden w-80 h-[520px] mx-auto relative flex flex-col">
+      <div className="relative flex-shrink-0">
         <img
           src={imageUrl}
           alt="Property"
-          className="w-full h-60 object-cover transition"
+          className="w-full h-48 object-cover"
         />
         {/* Top left badges or Locked */}
         <div className="absolute top-4 left-4 flex flex-col gap-2 z-10">
@@ -46,13 +74,13 @@ function PropertyCard(props) {
             </span>
           )}
           {/* Unlocked badge */}
-          {!locked && badges.includes("Unlocked") && (
+          {!isPropertyLocked && badges.includes("Unlocked") && (
             <span className="bg-[#00c950] text-white text-sm font-semibold px-4 py-1 rounded-full shadow flex items-center gap-2">
               Unlocked
             </span>
           )}
           {/* Locked badge */}
-          {locked && (
+          {isPropertyLocked && (
             <span className="bg-[#94a3b8] text-white text-sm font-semibold px-4 py-1 rounded-full shadow flex items-center gap-2">
               <FaLock /> Locked
             </span>
@@ -60,50 +88,64 @@ function PropertyCard(props) {
         </div>
         {/* Top right heart */}
         <button
-          className={`absolute top-4 right-4 bg-white rounded-full p-2 shadow ${
-            favorite ? "text-[#e23b5b]" : "text-slate-300"
+          onClick={handleBookmark}
+          disabled={bookmarkLoading}
+          className={`absolute top-4 right-4 bg-white rounded-full p-2 shadow transition ${
+            isBookmarked ? "text-[#e23b5b]" : "text-slate-300"
           } hover:bg-slate-100`}
         >
-          <FaHeart className="text-2xl" />
+          <FaHeart className="text-xl" />
         </button>
         {/* Price Drop badge */}
-        {priceDrop && !locked && (
+        {priceDrop && !isPropertyLocked && (
           <span className="absolute left-4 bottom-4 bg-[#e23b5b] text-white text-sm font-semibold px-4 py-1 rounded-full flex items-center gap-1 shadow">
             <IoIosTrendingDown className="text-base" /> Price Drop
           </span>
         )}
       </div>
-      <div className="p-6 pb-4">
-        <div className="text-2xl font-extrabold text-slate-800 mb-1">
-          {title}
+      <div className="p-6 flex-1 flex flex-col justify-between overflow-hidden">
+        <div className="flex-1 overflow-hidden">
+          <div className="text-xl font-extrabold text-slate-800 mb-2 h-14 overflow-hidden line-clamp-2">
+            {title}
+          </div>
+          <div className="flex items-start text-slate-500 text-sm mb-4 gap-2 h-12 overflow-hidden">
+            <FaMapMarkerAlt className="text-base flex-shrink-0 mt-0.5" />
+            <span className="line-clamp-2 leading-5">{address}</span>
+          </div>
+          <div className="flex items-center gap-4 text-slate-700 text-base mb-4 truncate">
+            <span className="flex items-center gap-1 flex-shrink-0">
+              <FaBed className="text-sm" /> {beds}
+            </span>
+            <span className="flex items-center gap-1 flex-shrink-0">
+              <FaBath className="text-sm" /> {baths}
+            </span>
+            <span className="flex items-center gap-1 flex-shrink-0">
+              <FaCar className="text-sm" /> {cars}
+            </span>
+          </div>
         </div>
-        <div className="flex items-center text-slate-500 text-base mb-4 gap-2">
-          <FaMapMarkerAlt className="text-lg" />
-          <span>{address}</span>
-        </div>
-        <div className="flex items-center gap-6 text-slate-700 text-lg mb-4">
-          <span className="flex items-center gap-2">
-            <FaBed /> {beds}
-          </span>
-          <span className="flex items-center gap-2">
-            <FaBath /> {baths}
-          </span>
-          <span className="flex items-center gap-2">
-            <FaCar /> {cars}
-          </span>
-        </div>
-        <div className="flex items-center justify-between border-t pt-3 mt-2">
-          <div className="text-slate-500 text-base">Built {built}</div>
+        <div className="flex items-center justify-between border-t pt-3 mt-auto overflow-hidden">
+          <div className="text-slate-500 text-sm truncate mr-2">
+            Built {built}
+          </div>
           <button
             onClick={() =>
-              navigate(`/property_details/${id}`, { state: { locked } })
+              navigate(`/property_details/${slug}`, {
+                state: { locked: isPropertyLocked },
+              })
             }
-            className="text-[#18aa99] font-semibold text-lg hover:underline"
+            className="text-[#18aa99] font-semibold text-base hover:underline flex-shrink-0"
           >
             View Details &rarr;
           </button>
         </div>
       </div>
+
+      {toast && (
+        <div className="fixed bottom-6 right-6 bg-green-600 text-white px-5 py-3 rounded-lg shadow-lg animate-slide-up z-50">
+          {toast}
+        </div>
+      )}
     </div>
   );
 }

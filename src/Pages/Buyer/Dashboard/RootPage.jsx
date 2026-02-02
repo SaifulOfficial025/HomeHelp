@@ -12,7 +12,7 @@ function RootPage() {
       <Navbar />
       <Hero />
       <Featured />
-      <Recommendation />
+      {/* <Recommendation /> */}
       <AllProperties />
       <Footer />
     </div>

@@ -16,7 +16,8 @@ function PropertyCard({
   status,
   image, // legacy prop
   imageUrl, // newer prop name
-  slug, // for edit navigation
+  slug, // for navigation
+  isLocked = false,
   onQR = () => {},
   onEdit = () => {},
 }) {
@@ -51,8 +52,17 @@ function PropertyCard({
     navigate("/edit_properties", { state: { slug } });
   };
 
+  const handleCardClick = () => {
+    if (slug) {
+      navigate(`/property_details/${slug}`, { state: { locked: isLocked } });
+    }
+  };
+
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm h-[560px] flex flex-col">
+    <div
+      className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm h-[560px] flex flex-col cursor-pointer"
+      onClick={handleCardClick}
+    >
       <div className="relative">
         <img
           src={imgSrc}
@@ -108,7 +118,10 @@ function PropertyCard({
             size="md"
             rounded={false}
             shadow
-            onClick={handleQR}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleQR();
+            }}
             className="flex-1 flex items-center justify-center gap-2"
           >
             <IoQrCodeSharp className="text-xl" />
@@ -122,7 +135,10 @@ function PropertyCard({
             shadow
             rounded={false}
             textColor="black"
-            onClick={handleEdit}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleEdit();
+            }}
             className="flex-1 flex items-center justify-center gap-2"
           >
             <FaRegEdit className="text-lg" />
