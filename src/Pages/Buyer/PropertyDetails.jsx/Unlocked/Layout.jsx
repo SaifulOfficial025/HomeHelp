@@ -97,15 +97,15 @@ function Layout({ propertySlug }) {
               <div className="lg:col-span-2 flex flex-col gap-6 overflow-x-hidden">
                 <PropertyOverview />
                 <PropertyFeature />
-                <Floorplan />
-                <LocationInsights />
+                {/* <Floorplan /> */}
+                {/* <LocationInsights /> */}
                 <InspectedReports />
-                <SimilarProperties />
+                {/* <SimilarProperties /> */}
               </div>
 
               <aside className="lg:col-span-1 flex flex-col gap-6">
                 <AgentCard />
-                <PriceDropAlert />
+                {/* <PriceDropAlert /> */}
               </aside>
             </div>
           </div>

@@ -26,7 +26,7 @@ function Account() {
         <div className="text-slate-500 text-sm mb-6">
           Your account is active and verified
         </div>
-        <div className="flex flex-wrap gap-8">
+        {/* <div className="flex flex-wrap gap-8">
           <div>
             <div className="text-slate-500 text-sm">Member Since</div>
             <div className="text-lg font-semibold text-slate-800">
@@ -39,7 +39,7 @@ function Account() {
               {accountId}
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Danger Zone */}

@@ -10,7 +10,10 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { IoIosTrendingDown } from "react-icons/io";
-import { addPropertyBookmark } from "../../Redux/Bookmark";
+import {
+  addPropertyBookmark,
+  removePropertyBookmark,
+} from "../../Redux/Bookmark";
 
 function PropertyCard(props) {
   const {
@@ -28,10 +31,12 @@ function PropertyCard(props) {
     isLocked,
     slug = "",
     propertyId = "",
+    bookmarkId = "",
   } = props;
 
   const navigate = useNavigate();
   const [isBookmarked, setIsBookmarked] = useState(favorite || false);
+  const [currentBookmarkId, setCurrentBookmarkId] = useState(bookmarkId || "");
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
   const [toast, setToast] = useState("");
 
@@ -45,12 +50,32 @@ function PropertyCard(props) {
 
     setBookmarkLoading(true);
     try {
-      await addPropertyBookmark(propertyId);
-      setIsBookmarked(true);
-      setToast("✓ Property added to bookmarks");
+      if (isBookmarked && currentBookmarkId) {
+        // Remove bookmark
+        console.log("Removing bookmark with ID:", currentBookmarkId);
+        await removePropertyBookmark(currentBookmarkId);
+        setIsBookmarked(false);
+        setCurrentBookmarkId("");
+        setToast("✓ Property removed from bookmarks");
+      } else {
+        // Add bookmark
+        const response = await addPropertyBookmark(propertyId);
+        console.log("Bookmark response:", response);
+        setIsBookmarked(true);
+        // Store the bookmark ID if returned in response
+        if (response.data?.id) {
+          setCurrentBookmarkId(response.data.id);
+          console.log("Stored bookmark ID:", response.data.id);
+        } else if (response.id) {
+          setCurrentBookmarkId(response.id);
+          console.log("Stored bookmark ID:", response.id);
+        }
+        setToast("✓ Property added to bookmarks");
+      }
       setTimeout(() => setToast(""), 4000);
     } catch (err) {
-      setToast(err.message || "Failed to bookmark property");
+      console.error("Bookmark error:", err);
+      setToast(err.message || "Failed to update bookmark");
       setTimeout(() => setToast(""), 4000);
     } finally {
       setBookmarkLoading(false);

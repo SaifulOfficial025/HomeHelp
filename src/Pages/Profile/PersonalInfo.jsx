@@ -10,6 +10,7 @@ function PersonalInfo() {
     email: "",
     phone: "",
     accountType: "",
+    isAgent: false,
   });
   const [avatar, setAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
@@ -34,6 +35,7 @@ function PersonalInfo() {
           email: response.user.email || "",
           phone: response.user.phone || "",
           accountType: response.user.role || "user",
+          isAgent: response.user.is_agent || false,
         });
 
         if (response.user.image) {
@@ -78,6 +80,7 @@ function PersonalInfo() {
       const updateData = {
         full_name: form.fullName,
         phone: form.phone,
+        is_agent: form.isAgent,
       };
 
       // Pass the file directly to the API function
@@ -230,6 +233,24 @@ function PersonalInfo() {
                   </div>
                 </div>
                 <div />
+              </div>
+
+              <div className="flex items-center gap-3 pt-2">
+                <input
+                  type="checkbox"
+                  id="isAgent"
+                  checked={form.isAgent}
+                  onChange={(e) =>
+                    setForm((s) => ({ ...s, isAgent: e.target.checked }))
+                  }
+                  className="w-4 h-4 text-[#18aa99] border-slate-300 rounded focus:ring-[#18aa99]"
+                />
+                <label
+                  htmlFor="isAgent"
+                  className="text-sm text-slate-700 cursor-pointer"
+                >
+                  Are you an agent?
+                </label>
               </div>
 
               <div className="mt-4">

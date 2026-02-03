@@ -10,7 +10,7 @@ import Footer from "../../Shared/Footer";
 const menu = [
   { label: "Profile", icon: <FaUser />, component: <PersonalInfo /> },
   { label: "Security", icon: <FaLock />, component: <Security /> },
-  { label: "Notifications", icon: <FaBell />, component: <Notification /> },
+  // { label: "Notifications", icon: <FaBell />, component: <Notification /> },
   { label: "Account", icon: <FaShieldAlt />, component: <Account /> },
 ];
 

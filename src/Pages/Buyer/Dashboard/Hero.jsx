@@ -12,7 +12,9 @@ import { FaHouse } from "react-icons/fa6";
 import { fetchDashboardStats } from "../../../Redux/DashboardStats";
 import { fetchInspections } from "../../../Redux/BookInspection";
 import { fetchProperties } from "../../../Redux/GetProperty";
+import { fetchFilteredProperties } from "../../../Redux/Filter";
 import PropertyCard from "../PropertyCard";
+import FilterModal from "../../../Components/FilterModal";
 
 function Hero() {
   const [user, setUser] = useState("User");
@@ -29,6 +31,10 @@ function Hero() {
   const [searchResults, setSearchResults] = useState([]);
   const [allProperties, setAllProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showFilterModal, setShowFilterModal] = useState(false);
+  const [filteredProperties, setFilteredProperties] = useState([]);
+  const [showFilterResults, setShowFilterResults] = useState(false);
+  const [activeFilters, setActiveFilters] = useState({});
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -131,6 +137,35 @@ function Hero() {
     });
   };
 
+  const handleApplyFilters = async (filters) => {
+    try {
+      setLoading(true);
+      setActiveFilters(filters);
+
+      // If no filters are applied, show all properties
+      if (Object.keys(filters).length === 0) {
+        setShowFilterResults(false);
+        setFilteredProperties([]);
+        setShowBookmarks(false);
+        setShowInspections(false);
+        setShowSearch(false);
+        return;
+      }
+
+      const properties = await fetchFilteredProperties(filters);
+      setFilteredProperties(properties || []);
+      setShowFilterResults(true);
+      setShowBookmarks(false);
+      setShowInspections(false);
+      setShowSearch(false);
+    } catch (err) {
+      console.error("Error applying filters:", err);
+      setFilteredProperties([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="bg-gradient-to-r from-[#0a2a47] to-[#133a5c] pb-10 px-8 pt-8  relative">
       <section className="max-w-7xl mx-auto items-center">
@@ -162,8 +197,16 @@ function Hero() {
               className="w-full rounded-lg py-3 pl-5 pr-12 text-base bg-transparent border border-white text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#18aa99]"
             />
           </div>
-          <button className="flex items-center gap-2 bg-[#223a5c] text-white px-5 py-3 rounded-lg  text-base hover:bg-[#1a2e4a]">
+          <button
+            onClick={() => setShowFilterModal(true)}
+            className="flex items-center gap-2 bg-[#223a5c] text-white px-5 py-3 rounded-lg  text-base hover:bg-[#1a2e4a]"
+          >
             <img src={filtericon} alt="Filters" className="w-5 h-5" /> Filters
+            {Object.keys(activeFilters).length > 0 && (
+              <span className="bg-[#18aa99] text-white text-xs font-bold rounded-full px-2 py-0.5">
+                {Object.keys(activeFilters).length}
+              </span>
+            )}
           </button>
         </div>
 
@@ -253,6 +296,65 @@ function Hero() {
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {searchResults.map((property) => (
+                  <PropertyCard
+                    key={property.id}
+                    propertyId={property.id}
+                    slug={property.slug}
+                    title={property.propertyName}
+                    address={property.propertyAddress}
+                    imageUrl={property.propertyFeatureImage}
+                    beds={property.propertyBedrooms}
+                    baths={property.propertyBathrooms}
+                    cars={property.propertyParking}
+                    built={property.propertyBuildYear}
+                    badges={[
+                      property.total_inspection_reports > 0 &&
+                        "Inspection Report Ready",
+                      !property.is_unlocked ? "Locked" : "Unlocked",
+                    ].filter(Boolean)}
+                    favorite={property.is_bookmarked}
+                    isLocked={!property.is_unlocked}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Filter Results Section */}
+        {showFilterResults && (
+          <div className="mt-8 bg-white rounded-2xl p-6 max-w-7xl mx-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-slate-800">
+                Filtered Properties
+                {filteredProperties.length > 0 && (
+                  <span className="text-lg text-slate-500 ml-2">
+                    ({filteredProperties.length} found)
+                  </span>
+                )}
+              </h3>
+              <button
+                onClick={() => {
+                  setShowFilterResults(false);
+                  setActiveFilters({});
+                  setFilteredProperties([]);
+                }}
+                className="text-slate-500 hover:text-slate-700 text-sm font-semibold"
+              >
+                Clear Filters
+              </button>
+            </div>
+
+            {filteredProperties.length === 0 ? (
+              <div className="text-center py-12 text-slate-500">
+                <p className="text-lg">No properties found</p>
+                <p className="text-sm mt-2">
+                  Try adjusting your filter criteria
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredProperties.map((property) => (
                   <PropertyCard
                     key={property.id}
                     propertyId={property.id}
@@ -405,6 +507,13 @@ function Hero() {
           </div>
         )}
       </section>
+
+      {/* Filter Modal */}
+      <FilterModal
+        isOpen={showFilterModal}
+        onClose={() => setShowFilterModal(false)}
+        onApplyFilters={handleApplyFilters}
+      />
     </div>
   );
 }

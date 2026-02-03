@@ -45,8 +45,11 @@ function AgentCard() {
           <div className="flex-1">
             <div className="text-lg font-extrabold text-slate-800">
               {property.owner_name || "Property Owner"}
+              {property.owner_is_agent && " (Agent)"}
             </div>
-            <div className="text-xs text-slate-500">Property Owner</div>
+            <div className="text-xs text-slate-500">
+              {property.owner_is_agent ? "Agent" : "Property Owner"}
+            </div>
             <div className="flex items-center gap-2 text-[#fbbf24] text-sm mt-2">
               <div className="flex items-center gap-1">
                 {[...Array(5)].map((_, i) => (

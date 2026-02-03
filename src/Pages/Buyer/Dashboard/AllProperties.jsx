@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import PropertyCard from "../PropertyCard";
 import { fetchProperties } from "../../../Redux/GetProperty";
+import { fetchBookmarks } from "../../../Redux/Bookmark";
 
 function AllProperties() {
   const [properties, setProperties] = useState([]);
+  const [bookmarks, setBookmarks] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -12,8 +14,26 @@ function AllProperties() {
       try {
         setLoading(true);
         setError(null);
-        const data = await fetchProperties();
-        setProperties(data);
+
+        // Fetch properties and bookmarks in parallel
+        const [propertiesData, bookmarksData] = await Promise.all([
+          fetchProperties(),
+          fetchBookmarks().catch(() => []), // Don't fail if bookmarks fail
+        ]);
+
+        // Create a map of property_id to bookmark_id
+        const bookmarkMap = {};
+        if (bookmarksData && Array.isArray(bookmarksData)) {
+          bookmarksData.forEach((bookmark) => {
+            if (bookmark.property_id || bookmark.property?.id) {
+              const propId = bookmark.property_id || bookmark.property?.id;
+              bookmarkMap[propId] = bookmark.id;
+            }
+          });
+        }
+
+        setBookmarks(bookmarkMap);
+        setProperties(propertiesData);
       } catch (err) {
         setError(err.message || "Failed to fetch properties");
         console.error("Error loading properties:", err);
@@ -72,6 +92,8 @@ function AllProperties() {
               optionalCount={property.total_optional_reports}
               status={property.status}
               isLocked={!property.is_unlocked}
+              favorite={property.is_bookmarked}
+              bookmarkId={bookmarks[property.id] || property.bookmark_id}
             />
           ))}
         </div>

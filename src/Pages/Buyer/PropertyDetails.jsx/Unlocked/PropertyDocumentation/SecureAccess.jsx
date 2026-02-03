@@ -11,7 +11,7 @@ function SecureAccess() {
         </div>
         <ul className="text-slate-600 text-base list-disc pl-5">
           <li>Documents protected by unique token</li>
-          <li>Download links expire in 5 minutes</li>
+          {/* <li>Download links expire in 5 minutes</li> */}
           <li>Read-only access</li>
         </ul>
       </div>
