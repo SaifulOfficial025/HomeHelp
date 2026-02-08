@@ -106,19 +106,19 @@ function MandatoryReports({
     <div className="max-w-4xl mx-auto mb-6">
       <div className="bg-white rounded-2xl shadow p-8 border border-slate-100">
         <h2 className="text-2xl font-extrabold text-slate-800">
-          Mandatory Reports
+          Highly Recommended Reports
         </h2>
         <p className="text-sm text-slate-500 mt-2">
           All four reports must be uploaded to activate your QR code
         </p>
 
-        <div className="mt-4 rounded-md bg-yellow-50 border border-yellow-100 p-4 text-sm text-yellow-800">
+        {/* <div className="mt-4 rounded-md bg-yellow-50 border border-yellow-100 p-4 text-sm text-yellow-800">
           <div className="font-bold text-xl">Required to activate QR.</div>
           <div className="mt-1 text-sm text-yellow-700">
             These documents are essential for building buyer trust and meeting
             legal disclosure requirements.
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-6 space-y-4">
           <ReportCard

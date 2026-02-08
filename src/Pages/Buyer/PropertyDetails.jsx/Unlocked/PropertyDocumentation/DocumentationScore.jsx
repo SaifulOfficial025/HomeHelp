@@ -7,7 +7,7 @@ function DocumentationScore() {
   const optionalCount = property.total_optional_reports || 0;
   const totalDocs = mandatoryCount + optionalCount;
   const totalPhotos = property.total_photos || 0;
-  const maxMandatory = 4; // Assuming 4 is the max for mandatory reports
+  const maxMandatory = 4; // Assuming 4 is the max for Highly Recommended Reports
   const totalScore = totalDocs + totalPhotos;
   const maxScore = maxMandatory + 10; // 4 mandatory + up to 10 optional/photos
 
@@ -32,7 +32,7 @@ function DocumentationScore() {
       </div>
       <div className="flex flex-col gap-1 text-base">
         <div className="flex items-center justify-between">
-          <span className="text-slate-600">Mandatory Reports</span>
+          <span className="text-slate-600">Highly Recommended Reports</span>
           <span className="text-[#18aa99] font-bold">
             {mandatoryCount}/{maxMandatory}
           </span>

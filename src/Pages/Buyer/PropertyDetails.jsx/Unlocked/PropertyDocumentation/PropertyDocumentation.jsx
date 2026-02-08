@@ -6,6 +6,7 @@ function PropertyDocumentation() {
   const property = useProperty();
   const inspectionReports = property.inspection_reports || [];
   const optionalReports = property.optional_reports || [];
+  const propertyPortfolio = property.propertyPortfolio || null;
 
   const getFileName = (url) => {
     if (!url) return "Document";
@@ -33,18 +34,20 @@ function PropertyDocumentation() {
         <div className="text-3xl font-extrabold text-slate-800">
           Property Documentation
         </div>
-        {(inspectionReports.length > 0 || optionalReports.length > 0) && (
+        {(inspectionReports.length > 0 ||
+          optionalReports.length > 0 ||
+          propertyPortfolio) && (
           <span className="inline-flex items-center gap-2 bg-[#e6faf7] text-[#18aa99] text-sm font-semibold px-4 py-1 rounded-full">
             <FaShieldAlt className="text-[#18aa99] text-base" /> Verified
           </span>
         )}
       </div>
 
-      {/* Mandatory Reports */}
+      {/* Highly Recommended Reports */}
       {inspectionReports.length > 0 && (
         <>
           <div className="text-2xl font-extrabold text-slate-800 mt-6 mb-2">
-            Mandatory Reports ({inspectionReports.length})
+            Highly Recommended Reports ({inspectionReports.length})
           </div>
           <div className="flex flex-col gap-4">
             {inspectionReports.map((report, i) => (
@@ -81,6 +84,49 @@ function PropertyDocumentation() {
                 </div>
               </div>
             ))}
+          </div>
+        </>
+      )}
+
+      {/* Property Portfolio */}
+      {propertyPortfolio && (
+        <>
+          <div className="text-2xl font-extrabold text-slate-800 mt-6 mb-2">
+            Property Portfolio
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between bg-gradient-to-r from-purple-50 to-blue-50 border-2 border-purple-200 rounded-xl px-5 py-4 shadow-sm">
+              <div className="flex items-center gap-3">
+                <FaFileAlt className="text-purple-600 text-2xl" />
+                <div>
+                  <div className="font-semibold text-slate-800">
+                    Complete Property Portfolio
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    {getFileName(propertyPortfolio)}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => handleView(propertyPortfolio)}
+                  className="text-purple-600 font-semibold hover:underline"
+                >
+                  View
+                </button>
+                <button
+                  onClick={() =>
+                    handleDownload(
+                      propertyPortfolio,
+                      getFileName(propertyPortfolio),
+                    )
+                  }
+                  className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-lg text-sm transition"
+                >
+                  <FaDownload /> Download
+                </button>
+              </div>
+            </div>
           </div>
         </>
       )}
@@ -130,11 +176,13 @@ function PropertyDocumentation() {
         </>
       )}
 
-      {inspectionReports.length === 0 && optionalReports.length === 0 && (
-        <div className="text-center py-12 text-slate-500">
-          <p>No reports available for this property yet.</p>
-        </div>
-      )}
+      {inspectionReports.length === 0 &&
+        optionalReports.length === 0 &&
+        !propertyPortfolio && (
+          <div className="text-center py-12 text-slate-500">
+            <p>No reports available for this property yet.</p>
+          </div>
+        )}
     </div>
   );
 }

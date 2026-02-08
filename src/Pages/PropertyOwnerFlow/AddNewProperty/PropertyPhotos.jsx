@@ -259,7 +259,7 @@ function PropertyPhotos({
             rounded={false}
             disabled={!featurePreview || !meetsMinimum}
           >
-            Next: Mandatory Reports
+            Next: Highly Recommended Reports
           </Button>
         </div>
       </div>

@@ -36,12 +36,14 @@ function ReviewandPublish({
     photos = {},
     mandatoryReports = [],
     optionalReports = {},
+    propertyPortfolio = null,
   } = uiData;
 
   const photosCount = photos.images?.length || 0;
   const mandatoryCount = mandatoryReports.filter((r) => r).length;
   const optionalCount = optionalReports.files?.filter((f) => f).length || 0;
   const featuresCount = optionalReports.features?.length || 0;
+  const hasPortfolio = Boolean(propertyPortfolio);
 
   const basicComplete = Boolean(
     basicInfo.propertyName && basicInfo.propertyAddress,
@@ -91,7 +93,7 @@ function ReviewandPublish({
         });
       }
 
-      // Mandatory reports (inspection_reports)
+      // Highly Recommended Reports (inspection_reports)
       (actualData.mandatoryReports || []).forEach((report) => {
         if (report && report.file) {
           payload.append("inspection_reports", report.file);
@@ -117,6 +119,18 @@ function ReviewandPublish({
             payload.append("features", feature);
           }
         });
+      }
+
+      // Property Portfolio
+      if (actualData.propertyPortfolio) {
+        if (typeof actualData.propertyPortfolio === "string") {
+          // Skip existing URL in edit mode
+        } else if (actualData.propertyPortfolio.file) {
+          payload.append(
+            "propertyPortfolio",
+            actualData.propertyPortfolio.file,
+          );
+        }
       }
 
       let result;
@@ -264,7 +278,7 @@ function ReviewandPublish({
                 </div>
                 <div>
                   <div className="font-medium text-slate-800">
-                    Mandatory Reports
+                    Highly Recommended Reports
                   </div>
                   <div className="text-xs text-slate-500">
                     {mandatoryCount}/4 reports uploaded
@@ -287,6 +301,36 @@ function ReviewandPublish({
                   </div>
                 </div>
               </li>
+
+              <li
+                className={`flex items-start gap-3 p-3 rounded ${
+                  hasPortfolio
+                    ? "bg-purple-50 border border-purple-100"
+                    : "bg-slate-50"
+                }`}
+              >
+                <div className="flex-shrink-0">
+                  <div
+                    className={`h-8 w-8 rounded-full ${
+                      hasPortfolio
+                        ? "bg-purple-50 text-purple-600"
+                        : "bg-slate-100 text-slate-600"
+                    } flex items-center justify-center`}
+                  >
+                    <IoMdCheckmarkCircleOutline />
+                  </div>
+                </div>
+                <div>
+                  <div className="font-medium text-slate-800">
+                    Property Portfolio
+                  </div>
+                  <div className="text-xs text-slate-500">
+                    {hasPortfolio
+                      ? "Portfolio uploaded"
+                      : "Not uploaded (optional)"}
+                  </div>
+                </div>
+              </li>
             </ul>
           </div>
 
@@ -294,7 +338,7 @@ function ReviewandPublish({
             <div className="bg-[#f3fbfa] border-2 border-[#c6eee9] rounded-lg p-4">
               <div className="flex items-center justify-between mb-3">
                 <div className="font-semibold text-slate-800">
-                  Mandatory Reports
+                  Highly Recommended Reports
                 </div>
                 <div className="text-sm text-green-700 bg-[#dcfce7]  rounded px-2 py-0.5 font-medium">
                   {mandatoryCount}/4
@@ -384,7 +428,7 @@ function ReviewandPublish({
               <div className="text-sm text-[#0d542b] mt-1">
                 {canPublish
                   ? "All mandatory requirements met. You can now generate your QR code and start sharing verified property data with buyers."
-                  : "Please upload all mandatory reports to enable publishing."}
+                  : "Please upload all Highly Recommended Reports to enable publishing."}
               </div>
             </div>
           </div>

@@ -234,7 +234,7 @@ function OptionalReports({
             rounded={false}
             shadow
           >
-            Next: Review & Publish
+            Next: Property Portfolio
           </Button>
         </div>
       </div>

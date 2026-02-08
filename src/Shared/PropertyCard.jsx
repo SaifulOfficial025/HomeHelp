@@ -93,7 +93,7 @@ function PropertyCard({
 
           <div className="mt-5">
             <div className="flex items-center justify-between text-sm text-slate-600">
-              <div>Mandatory Reports</div>
+              <div>Highly Recommended Reports</div>
               <div className="font-semibold text-[#00c950]">
                 {display(reportsCompleted)}/{display(reportsTotal)}
               </div>

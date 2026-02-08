@@ -5,6 +5,7 @@ import BasicPropertyInfo from "./BasicPropertyInfo";
 import PropertyPhotos from "./PropertyPhotos";
 import MandatoryReports from "./MandatoryReports";
 import OptionalReports from "./OptionalReports";
+import UploadPortfolio from "./UploadPortfolio";
 import ReviewandPublish from "./ReviewandPublish";
 import Navbar from "../Navbar";
 import Footer from "../../../Shared/Footer";
@@ -13,8 +14,9 @@ import { getPropertyBySlug } from "../../../Redux/PropertyAddEdit";
 const steps = [
   { id: "basic", label: "Basic Info" },
   { id: "photos", label: "Photos" },
-  { id: "mandatory", label: "Mandatory Reports" },
+  { id: "mandatory", label: "Highly Recommended Reports" },
   { id: "optional", label: "Optional Reports" },
+  { id: "portfolio", label: "Property Portfolio" },
   { id: "review", label: "Review & Publish" },
 ];
 
@@ -32,6 +34,7 @@ function Layout() {
     mandatoryReports: [],
     optionalReports: [],
     features: [],
+    propertyPortfolio: null,
   });
 
   useEffect(() => {
@@ -65,6 +68,7 @@ function Layout() {
         mandatoryReports: data.inspection_reports || [],
         optionalReports: data.optional_reports || [],
         features: data.features || [],
+        propertyPortfolio: data.propertyPortfolio || null,
       });
     } catch (error) {
       console.error("Error loading property:", error);
@@ -106,6 +110,13 @@ function Layout() {
             ) || [],
           features: updatedFormData.optionalReports?.features || [],
         },
+        propertyPortfolio: updatedFormData.propertyPortfolio
+          ? {
+              id: updatedFormData.propertyPortfolio.id,
+              isExisting: updatedFormData.propertyPortfolio.isExisting,
+              preview: updatedFormData.propertyPortfolio.preview,
+            }
+          : null,
       };
       localStorage.setItem("propertyFormData", JSON.stringify(dataToSave));
     } catch (err) {
@@ -169,6 +180,15 @@ function Layout() {
           />
         );
       case 4:
+        return (
+          <UploadPortfolio
+            onNext={(data) => goNext("propertyPortfolio", data)}
+            onBack={goBack}
+            initialData={formData.propertyPortfolio}
+            isEditMode={isEditMode}
+          />
+        );
+      case 5:
         return (
           <ReviewandPublish
             onBack={goBack}
