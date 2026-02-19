@@ -33,22 +33,22 @@ function MyProperty() {
     <div className="min-h-screen bg-white">
       <Navbar />
 
-      <main className="max-w-7xl mx-auto px-6 py-10">
-        <div className="flex items-start justify-between">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-4xl font-extrabold text-slate-900">
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900">
               My Properties
             </h1>
-            <p className="text-sm text-slate-500 mt-2">
+            <p className="text-sm sm:text-base text-slate-500 mt-2">
               Manage your property listings and documentation
             </p>
-            <div className="mt-4 text-sm text-slate-600">
+            <div className="mt-3 sm:mt-4 text-sm sm:text-base text-slate-600">
               {properties.length} properties
             </div>
           </div>
 
-          <div className="pt-2">
-            <Link to="/add_property">
+          <div className="pt-2 w-full sm:w-auto">
+            <Link to="/add_property" className="block w-full sm:inline-block">
               <Button color="blue" size="md" rounded={false} shadow>
                 + Add Property
               </Button>
@@ -95,7 +95,9 @@ function MyProperty() {
           </div>
         )}
       </main>
-      <Footer />
+      <div className="mt-24 sm:mt-44">
+        <Footer />
+      </div>
     </div>
   );
 }

@@ -60,7 +60,9 @@ function Footer() {
                 />
                 <div className="text-left">
                   <div className="text-slate-200">Email</div>
-                  <div className="text-slate-400">hello@propscan.com</div>
+                  <div className="text-slate-100">
+                    admin@homehelpgroup.com.au
+                  </div>
                 </div>
               </li>
 
@@ -79,7 +81,7 @@ function Footer() {
                 </svg>
                 <div className="text-left">
                   <div className="text-slate-200">Phone</div>
-                  <div className="text-slate-400">+1 (234) 567-890</div>
+                  <div className="text-slate-100">0401 753 696</div>
                 </div>
               </li>
 
@@ -98,8 +100,8 @@ function Footer() {
                 </svg>
                 <div className="text-left">
                   <div className="text-slate-200">Address</div>
-                  <div className="text-slate-400">
-                    123 Property Street San Francisco, CA 94102
+                  <div className="text-slate-100">
+                    11/95 Bannister Road Canning Vale 6155
                   </div>
                 </div>
               </li>
@@ -115,8 +117,8 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-slate-800 mt-8 pt-6 text-center text-slate-500 text-sm">
-          © 2024 PropScan. All rights reserved.
+        <div className="border-t border-slate-800 mt-8 pt-6 text-center text-slate-300 text-sm">
+          © 2026 PropScan. All rights reserved.
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../Shared/Button";
+import { Link } from "react-router-dom";
 
 function ReadytoTransform() {
   return (
@@ -22,9 +23,11 @@ function ReadytoTransform() {
         </p>
 
         <div className="mt-8">
-          <Button color="blue" size="md" rounded={false} shadow>
-            Get Started Free
-          </Button>
+          <Link to="/signin">
+            <Button color="blue" size="md" rounded={false} shadow>
+              Get Started Free
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

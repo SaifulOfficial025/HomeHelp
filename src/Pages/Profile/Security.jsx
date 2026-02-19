@@ -70,11 +70,11 @@ function Security() {
 
   return (
     <div className="max-w-xl mx-auto">
-      <div className="bg-white rounded-2xl shadow p-8 border border-slate-100">
-        <h2 className="text-2xl font-extrabold text-slate-800">
+      <div className="bg-white rounded-2xl shadow p-4 sm:p-8 border border-slate-100">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800">
           Change Password
         </h2>
-        <p className="text-sm text-slate-500 mt-2">
+        <p className="text-xs sm:text-sm text-slate-500 mt-2">
           Ensure your account is secure with a strong password
         </p>
 
@@ -90,9 +90,12 @@ function Security() {
           </div>
         )}
 
-        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+        <form
+          className="mt-6 sm:mt-8 space-y-4 sm:space-y-5"
+          onSubmit={handleSubmit}
+        >
           <div>
-            <label className="block text-sm text-slate-700 mb-2">
+            <label className="block text-xs sm:text-sm text-slate-700 mb-2">
               Current Password <span className="text-rose-500">*</span>
             </label>
             <div className="relative">
@@ -105,7 +108,7 @@ function Security() {
                 value={form.current}
                 onChange={handleChange}
                 placeholder="Enter current password"
-                className="w-full pl-10 pr-12 py-3 rounded-lg border border-slate-200 text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-[#18aa99]"
+                className="w-full pl-10 pr-12 py-2 sm:py-3 rounded-lg border border-slate-200 text-sm bg-slate-50 focus:outline-none focus:ring-2 focus:ring-[#18aa99]"
               />
               <button
                 type="button"

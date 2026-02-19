@@ -10,6 +10,7 @@ import BuyerDashboard from "../Pages/Buyer/Dashboard/RootPage";
 import PropertyDetailsRouter from "../Pages/Buyer/PropertyDetails.jsx/PropertyDetailsRouter";
 import PropertyDocumentation from "../Pages/Buyer/PropertyDetails.jsx/Unlocked/PropertyDocumentation/RootPage";
 import QRScanner from "../Pages/QRScanner/QRScanner";
+import ProtectedRoute from "../Components/ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -30,11 +31,19 @@ export const router = createBrowserRouter([
   },
   {
     path: "/my_properties",
-    element: <MyProperty />,
+    element: (
+      <ProtectedRoute>
+        <MyProperty />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/qr_link",
-    element: <QRPage />,
+    element: (
+      <ProtectedRoute>
+        <QRPage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "*",
@@ -42,26 +51,50 @@ export const router = createBrowserRouter([
   },
   {
     path: "/add_property",
-    element: <PropertyAddEdit />,
+    element: (
+      <ProtectedRoute>
+        <PropertyAddEdit />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/edit_properties",
-    element: <PropertyAddEdit />,
+    element: (
+      <ProtectedRoute>
+        <PropertyAddEdit />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/settings",
-    element: <Profile />,
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/buyer_dashboard",
-    element: <BuyerDashboard />,
+    element: (
+      <ProtectedRoute>
+        <BuyerDashboard />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/property_details/:slug",
-    element: <PropertyDetailsRouter />,
+    element: (
+      <ProtectedRoute>
+        <PropertyDetailsRouter />
+      </ProtectedRoute>
+    ),
   },
   {
     path: "/property_details/:slug/property_documentation",
-    element: <PropertyDocumentation />,
+    element: (
+      <ProtectedRoute>
+        <PropertyDocumentation />
+      </ProtectedRoute>
+    ),
   },
 ]);

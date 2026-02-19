@@ -49,7 +49,7 @@ function ReviewandPublish({
     basicInfo.propertyName && basicInfo.propertyAddress,
   );
   const photosComplete = photos.featurePreview && photosCount >= 3;
-  const mandatoryComplete = mandatoryCount >= 4;
+  const mandatoryComplete = mandatoryCount >= 1;
   const canPublish = basicComplete && photosComplete && mandatoryComplete;
 
   const handlePublish = async () => {

@@ -67,10 +67,10 @@ function UnlockCard({ propertySlug }) {
         <div className="flex items-center gap-2 text-slate-700 text-sm">
           <FaFileAlt className="text-[#18aa99]" /> 4 verified documents included
         </div>
-        <div className="flex items-center gap-2 text-slate-700 text-sm">
+        {/* <div className="flex items-center gap-2 text-slate-700 text-sm">
           <FaClock className="text-[#18aa99]" /> Download links expire in 5
           minutes
-        </div>
+        </div> */}
       </div>
       <hr className="w-full border-slate-200 mb-3" />
       <div className="text-slate-400 text-xs text-center">

@@ -7,6 +7,7 @@ import UnlockCard from "./UnlockCard";
 import LockedPropertyDocumentation from "./LockedPropertyDocumentation";
 import LockedPhotoGallery from "./LockedPhotoGallery";
 import { fetchPropertyBySlug } from "../../../../Redux/PropertyDetails";
+import UnlockedPhotoGallery from "./UnlockedPhotoGallery";
 
 function LockedLayout({ propertySlug }) {
   const [property, setProperty] = useState(null);
@@ -80,7 +81,8 @@ function LockedLayout({ propertySlug }) {
             <div className="lg:col-span-2 flex flex-col gap-6">
               <ProtectYourInvestment />
               <LockedPropertyDocumentation />
-              <LockedPhotoGallery />
+              {/* <LockedPhotoGallery /> */}
+              <UnlockedPhotoGallery />
             </div>
 
             <aside className="lg:col-span-1">

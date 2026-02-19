@@ -248,7 +248,7 @@ export default function SignUp() {
         </div>
 
         {/* Right: Image Card */}
-        <div className="lg:col-span-6 flex justify-center">
+        <div className="lg:col-span-6 flex justify-center hidden lg:block">
           <div className="w-full h-full  overflow-hidden  relative">
             <img
               src="/authsideimg.png"

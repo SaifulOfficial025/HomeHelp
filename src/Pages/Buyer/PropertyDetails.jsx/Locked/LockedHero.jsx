@@ -5,29 +5,29 @@ function LockedHero({ property }) {
   if (!property) return null;
 
   return (
-    <div className="relative w-full h-64 md:h-96 overflow-hidden mb-20">
+    <div className="relative w-full h-56 sm:h-64 md:h-96 overflow-hidden mb-20">
       <img
         src={property.propertyFeatureImage || "/propertydummyimage.jpg"}
         alt={property.propertyName}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover object-center"
       />
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
       {/* Content */}
-      <div className="absolute left-0 top-12 h-full flex flex-col justify-center pl-10 pr-10 md:pr-64 z-10 ">
+      <div className="absolute left-0 top-8 sm:top-12 h-full flex flex-col justify-center pl-4 sm:pl-6 md:pl-10 pr-4 sm:pr-10 md:pr-64 z-10">
         <div className="mb-3">
-          <span className="inline-flex items-center gap-2 bg-[#18aa99] text-white text-xs font-semibold px-4 py-1 rounded-full shadow">
-            <FaCheckCircle className="text-base" /> Verified property
+          <span className="inline-flex items-center gap-2 bg-[#18aa99] text-white text-[10px] sm:text-xs font-semibold px-3 py-1 rounded-full shadow">
+            <FaCheckCircle className="text-sm sm:text-base" /> Verified property
             documentation from the owner
           </span>
         </div>
-        <div className="text-3xl md:text-4xl font-extrabold text-white mb-1">
+        <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mb-1">
           {property.propertyName}
         </div>
-        <div className="text-white text-base mb-4">
+        <div className="text-white text-sm sm:text-base mb-4">
           {property.propertyAddress}
         </div>
-        <div className="flex items-center gap-6 text-white text-base">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-white text-sm sm:text-base">
           <span>{property.propertyBedrooms || 0} beds</span>
           <span>{property.propertyBathrooms || 0} baths</span>
           <span>{property.propertyParking || 0} parking</span>
@@ -37,9 +37,11 @@ function LockedHero({ property }) {
         </div>
       </div>
       {/* Locked Reports */}
-      <div className="mt-16 absolute right-10 top-1/2 -translate-y-1/2 bg-white/20 rounded-xl px-8 py-7 flex flex-col items-center shadow-lg border border-white/30 backdrop-blur-sm">
-        <FaLock className="text-white text-3xl mb-2" />
-        <span className="text-white text-sm font-medium">Reports Locked</span>
+      <div className="mt-16 absolute right-4 sm:right-10 top-1/2 -translate-y-1/2 bg-white/20 rounded-xl px-2 sm:px-8 py-3 sm:py-5 flex flex-col items-center shadow-lg border border-white/30 backdrop-blur-sm">
+        <FaLock className="text-white text-2xl sm:text-3xl mb-2" />
+        <span className="text-white text-xs sm:text-sm font-medium">
+          Reports Locked
+        </span>
       </div>
     </div>
   );

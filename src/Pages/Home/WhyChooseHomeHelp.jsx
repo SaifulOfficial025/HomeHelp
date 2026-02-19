@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../../Shared/Button";
+import { Link } from "react-router-dom";
 function WhyChooseHomeHelp() {
   return (
     <section className="w-full">
@@ -73,9 +74,11 @@ function WhyChooseHomeHelp() {
             </div>
 
             <div className="mt-6">
-              <Button color="black" size="md" rounded={false} shadow>
-                Start Building Trust Today
-              </Button>
+              <Link to="/signin">
+                <Button color="black" size="md" rounded={false} shadow>
+                  Start Building Trust Today
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

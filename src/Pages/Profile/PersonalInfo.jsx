@@ -113,11 +113,11 @@ function PersonalInfo() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-2xl shadow p-8 border border-slate-100">
-        <h2 className="text-2xl font-extrabold text-slate-800">
+      <div className="bg-white rounded-2xl shadow p-4 sm:p-8 border border-slate-100">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800">
           Personal Information
         </h2>
-        <p className="text-sm text-slate-500 mt-2">
+        <p className="text-xs sm:text-sm text-slate-500 mt-2">
           Manage your profile details
         </p>
 
@@ -133,15 +133,15 @@ function PersonalInfo() {
           </div>
         )}
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 items-start">
           <div className="flex flex-col items-center md:items-start">
             <div className="relative">
-              <div className="h-32 w-32 rounded-full bg-[#18aa99] text-white flex items-center justify-center text-2xl font-semibold">
+              <div className="h-24 w-24 sm:h-32 sm:w-32 rounded-full bg-[#18aa99] text-white flex items-center justify-center text-xl sm:text-2xl font-semibold">
                 {avatar ? (
                   <img
                     src={profiledummyimg}
                     alt="avatar"
-                    className="h-32 w-32 rounded-full object-cover"
+                    className="h-24 w-24 sm:h-32 sm:w-32 rounded-full object-cover"
                   />
                 ) : (
                   initials
@@ -151,10 +151,10 @@ function PersonalInfo() {
                 onClick={handleChoose}
                 className="absolute -bottom-2 right-0 bg-white p-1 rounded-full shadow -translate-y-2"
               >
-                <FaCamera className="text-slate-700" />
+                <FaCamera className="text-slate-700 text-sm" />
               </button>
             </div>
-            <div className="text-xs text-slate-500 mt-3 ml-4">
+            <div className="text-xs text-slate-500 mt-2 sm:mt-3 sm:ml-4 text-center md:text-left">
               JPG, PNG or GIF
               <br />
               Max size: 5MB

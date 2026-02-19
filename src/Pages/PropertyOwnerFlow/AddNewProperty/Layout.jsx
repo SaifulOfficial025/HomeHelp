@@ -208,17 +208,17 @@ function Layout() {
       <Navbar />
       <div className="max-w-3xl mx-auto px-4 mt-6 mb-16">
         <header className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-800">
             {isEditMode ? "Edit Property" : "Add New Property"}
           </h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-xs sm:text-sm text-slate-500">
             {isEditMode
               ? "Update your property details"
               : "Complete all steps to generate your QR code and publish"}
           </p>
         </header>
 
-        <nav className="flex items-center gap-6 mb-6">
+        <nav className="flex items-center gap-3 sm:gap-6 mb-6 overflow-x-auto">
           {steps.map((s, idx) => {
             const completed = idx < step;
             const active = idx === step;
@@ -226,7 +226,7 @@ function Layout() {
               <div key={s.id} className="flex items-center gap-3">
                 <button
                   onClick={() => idx <= step && setStep(idx)}
-                  className={`h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                  className={`h-7 w-7 sm:h-8 sm:w-8 rounded-full flex items-center justify-center text-sm font-semibold ${
                     completed
                       ? "bg-[#18aa99] text-white"
                       : active
@@ -236,10 +236,14 @@ function Layout() {
                   aria-current={active}
                   aria-label={s.label}
                 >
-                  {completed ? <FaCheck className="w-5 h-5 " /> : idx + 1}
+                  {completed ? (
+                    <FaCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+                  ) : (
+                    idx + 1
+                  )}
                 </button>
                 <div
-                  className={`text-sm ${
+                  className={`text-xs sm:text-sm ${
                     active ? "text-slate-800 font-medium" : "text-slate-500"
                   }`}
                 >

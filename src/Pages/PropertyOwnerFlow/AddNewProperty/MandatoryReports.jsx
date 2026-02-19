@@ -109,7 +109,8 @@ function MandatoryReports({
           Highly Recommended Reports
         </h2>
         <p className="text-sm text-slate-500 mt-2">
-          All four reports must be uploaded to activate your QR code
+          Upload at least one report to continue (all four reports are
+          recommended)
         </p>
 
         {/* <div className="mt-4 rounded-md bg-yellow-50 border border-yellow-100 p-4 text-sm text-yellow-800">
@@ -172,7 +173,7 @@ function MandatoryReports({
             color="green"
             size="md"
             rounded={false}
-            disabled={completed < 4}
+            disabled={completed < 1}
           >
             Next: Optional Reports
           </Button>

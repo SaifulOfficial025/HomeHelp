@@ -167,7 +167,7 @@ function Hero() {
   };
 
   return (
-    <div className="bg-gradient-to-r from-[#0a2a47] to-[#133a5c] pb-10 px-8 pt-8  relative">
+    <div className="bg-gradient-to-r from-[#0a2a47] to-[#133a5c] pb-10 px-4 sm:px-8 pt-8 relative">
       <section className="max-w-7xl mx-auto items-center">
         {/* Notification bell */}
         <div className="absolute top-6 right-10">
@@ -179,27 +179,27 @@ function Hero() {
           </button> */}
         </div>
         {/* Welcome */}
-        <h1 className="text-4xl font-extrabold text-white mb-2">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">
           Welcome back, {user} <span className="inline-block">👋</span>
         </h1>
-        <div className="text-slate-200 text-base mb-7">
+        <div className="text-slate-200 text-sm sm:text-base mb-7">
           Find your next home with trusted inspection details
         </div>
 
         {/* Search bar and actions */}
-        <div className="flex items-center gap-3 mb-8 max-w-full">
-          <div className="flex-1 relative">
+        <div className="flex flex-col sm:flex-row items-center gap-3 mb-8 max-w-full">
+          <div className="flex-1 relative w-full">
             <input
               type="text"
               placeholder="Search by suburb, city or property ID..."
               value={searchQuery}
               onChange={handleSearch}
-              className="w-full rounded-lg py-3 pl-5 pr-12 text-base bg-transparent border border-white text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#18aa99]"
+              className="w-full rounded-lg py-2 sm:py-3 pl-5 pr-12 text-sm sm:text-base bg-transparent border border-white text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#18aa99]"
             />
           </div>
           <button
             onClick={() => setShowFilterModal(true)}
-            className="flex items-center gap-2 bg-[#223a5c] text-white px-5 py-3 rounded-lg  text-base hover:bg-[#1a2e4a]"
+            className="flex items-center gap-2 bg-[#223a5c] text-white px-5 py-3 rounded-lg text-base hover:bg-[#1a2e4a] w-full sm:w-auto mt-3 sm:mt-0 justify-center"
           >
             <img src={filtericon} alt="Filters" className="w-5 h-5" /> Filters
             {Object.keys(activeFilters).length > 0 && (
@@ -211,11 +211,11 @@ function Hero() {
         </div>
 
         {/* Dashboard cards */}
-        <div className="flex gap-6 max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row gap-6 max-w-7xl mx-auto">
           {/* Saved Properties */}
           <button
             onClick={handleShowBookmarks}
-            className="flex-1 bg-white/10 rounded-2xl px-7 py-6 flex items-center gap-4 relative min-w-[220px] hover:bg-white/20 transition cursor-pointer"
+            className="w-full sm:flex-1 bg-white/10 rounded-2xl px-5 sm:px-7 py-4 sm:py-6 flex items-center gap-4 relative sm:min-w-[220px] hover:bg-white/20 transition cursor-pointer"
           >
             <div className="bg-[#18aa99] bg-opacity-20 p-3 rounded-lg">
               <FaHeart className="text-[#18aa99] text-2xl" />
@@ -232,7 +232,7 @@ function Hero() {
           {/* Inspection Bookings */}
           <button
             onClick={handleShowInspections}
-            className="flex-1 bg-white/10 rounded-2xl px-7 py-6 flex items-center gap-4 relative min-w-[220px] hover:bg-white/20 transition cursor-pointer"
+            className="w-full sm:flex-1 bg-white/10 rounded-2xl px-5 sm:px-7 py-4 sm:py-6 flex items-center gap-4 relative sm:min-w-[220px] hover:bg-white/20 transition cursor-pointer"
           >
             <div className="bg-[#fbbf24] bg-opacity-20 p-3 rounded-lg">
               <FaCalendarAlt className="text-[#fbbf24] text-2xl" />
@@ -247,7 +247,7 @@ function Hero() {
             </span>
           </button>
           {/* Downloaded Reports */}
-          <div className="flex-1 bg-white/10 rounded-2xl px-7 py-6 flex items-center gap-4 relative min-w-[220px]">
+          <div className="w-full sm:flex-1 bg-white/10 rounded-2xl px-5 sm:px-7 py-4 sm:py-6 flex items-center gap-4 relative sm:min-w-[220px]">
             <div className="bg-[#2563eb] bg-opacity-20 p-3 rounded-lg">
               <FaHouse className="text-[#2563eb] text-2xl" />
             </div>

@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../../Shared/Button";
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FaCheckCircle } from "react-icons/fa";
 
 function Hero() {
   return (
@@ -10,8 +11,9 @@ function Hero() {
         {/* Left content */}
         <div className="lg:col-span-6">
           <div className="inline-block bg-white text-sm text-[#18aa99] rounded-full shadow-lg px-3 py-1 mb-6">
-            <FaStar className="inline-block mr-2 -mt-1" />
-            Trusted by 5,000+ Property Owners
+            {/* <FaStar className="inline-block mr-2 -mt-1" /> */}
+            <FaCheckCircle className="inline-block mr-2 -mt-1" />
+            Trusted by Property Owners
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight text-slate-900">
@@ -53,18 +55,27 @@ function Hero() {
 
           <div className="mt-10 grid grid-cols-3 gap-6 max-w-md">
             <div>
-              <div className="text-2xl  text-[#18aa99]">5,000+</div>
-              <div className="text-sm text-slate-500">Properties Listed</div>
+              <FaCheckCircle className="text-3xl  text-[#18aa99] mb-1" />
+              {/* <div className="text-2xl  text-[#18aa99]">5,000+</div> */}
+              <div className="text-sm text-slate-500">
+                Properties Listed Free
+              </div>
             </div>
 
             <div>
-              <div className="text-2xl  text-[#18aa99]">12,000+</div>
-              <div className="text-sm text-slate-500">Reports Unlocked</div>
+              <FaCheckCircle className="text-3xl  text-[#18aa99] mb-1" />
+              {/* <div className="text-2xl  text-[#18aa99]">12,000+</div> */}
+              <div className="text-sm text-slate-500">
+                Reports Unlocked Instantly
+              </div>
             </div>
 
             <div>
-              <div className="text-2xl  text-[#18aa99]">98%</div>
-              <div className="text-sm text-slate-500">Satisfaction Rate</div>
+              <FaCheckCircle className="text-3xl  text-[#18aa99] mb-1" />
+              {/* <div className="text-2xl  text-[#18aa99]">98%</div> */}
+              <div className="text-sm text-slate-500">
+                Satisfaction Guaranteed
+              </div>
             </div>
           </div>
         </div>

@@ -36,19 +36,19 @@ function Notification() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-2xl shadow p-8 border border-slate-100">
-        <h2 className="text-2xl font-extrabold text-slate-800">
+      <div className="bg-white rounded-2xl shadow p-4 sm:p-8 border border-slate-100">
+        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-800">
           Notification Preferences
         </h2>
-        <p className="text-sm text-slate-500 mt-2">
+        <p className="text-xs sm:text-sm text-slate-500 mt-2">
           Choose how you want to be notified
         </p>
 
-        <div className="mt-8 bg-slate-50 rounded-xl p-6">
-          <div className="font-semibold text-slate-800 mb-4">
+        <div className="mt-6 sm:mt-8 bg-slate-50 rounded-xl p-4 sm:p-6">
+          <div className="font-semibold text-slate-800 mb-3 sm:mb-4 text-sm sm:text-base">
             Notification Channels
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3 sm:gap-4">
             <div className="flex items-center justify-between">
               <div>
                 <div className="flex items-center gap-2 font-medium text-slate-700">

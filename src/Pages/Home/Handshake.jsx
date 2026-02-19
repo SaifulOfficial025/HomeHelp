@@ -10,8 +10,12 @@ function Handshake() {
         style={{ minWidth: 128 }}
       />
       <div className="flex items-center justify-center w-full max-w-5xl mx-auto gap-8 px-8">
-        <h2 className="flex-1 flex items-center justify-center text-2xl md:text-7xl font-bold text-black drop-shadow-lg text-center px-0 md:px-20">
+        {/* <h2 className="flex-1 flex items-center justify-center text-2xl md:text-6xl font-bold text-black drop-shadow-lg text-center px-0 md:px-20">
           MAKE PROPERTY SETTLEMENTS <br /> <br /> AS QUICK AS A HANDSHAKE
+        </h2> */}
+        <h2 className="flex-1 flex items-center justify-center text-2xl md:text-6xl font-bold text-black drop-shadow-lg text-center px-0 md:px-20">
+          Secure. Seamless. Settled. <br /> <br /> Fast track settlements,
+          Effortless as a handshake.
         </h2>
       </div>
     </div>

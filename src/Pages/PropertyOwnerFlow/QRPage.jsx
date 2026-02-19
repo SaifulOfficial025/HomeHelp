@@ -143,7 +143,7 @@ function QRPage() {
                 </h3>
                 <ul className="text-sm text-slate-600 space-y-1">
                   <li>Documents protected by unique QR token</li>
-                  <li>Download links expire in 5 minutes</li>
+                  {/* <li>Download links expire in 5 minutes</li> */}
                   <li>Secure Stripe payment processing</li>
                   <li>Read-only access for buyers</li>
                 </ul>
