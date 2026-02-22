@@ -53,6 +53,7 @@ function Layout() {
           propertyName: data.propertyName,
           propertyAddress: data.propertyAddress,
           propertyType: data.propertyType,
+          propertyDetails: data.propertyDetails,
           propertyBedrooms: data.propertyBedrooms,
           propertyBathrooms: data.propertyBathrooms,
           propertyParking: data.propertyParking,

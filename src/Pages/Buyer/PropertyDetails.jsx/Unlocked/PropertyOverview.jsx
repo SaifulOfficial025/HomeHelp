@@ -33,6 +33,14 @@ function PropertyOverview() {
             <span>{property.propertyAddress}</span>
           </div>
         </div>
+
+        {property.propertyDetails && (
+          <div className="text-slate-600 text-sm leading-relaxed mb-4 max-w-2xl">
+            {property.propertyDetails ||
+              "No bio ordescription available for this property."}
+          </div>
+        )}
+
         {property.unlock_price && (
           <div className="text-right mt-2">
             <div className="text-2xl text-slate-800">

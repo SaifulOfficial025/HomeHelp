@@ -11,6 +11,7 @@ function BasicPropertyInfo({
     propertyName: "",
     propertyAddress: "",
     propertyType: "",
+    propertyDetails: "",
     propertyBedrooms: "",
     propertyBathrooms: "",
     propertyParking: "",
@@ -21,10 +22,19 @@ function BasicPropertyInfo({
   });
 
   useEffect(() => {
+    console.log("BasicPropertyInfo - initialData:", initialData);
+    console.log(
+      "BasicPropertyInfo - propertyDetails from initialData:",
+      initialData?.propertyDetails,
+    );
     if (initialData && Object.keys(initialData).length > 0) {
-      setForm(initialData);
+      setForm((prevForm) => ({ ...prevForm, ...initialData }));
     }
   }, [initialData]);
+
+  useEffect(() => {
+    console.log("BasicPropertyInfo - current form state:", form);
+  }, [form]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -64,6 +74,20 @@ function BasicPropertyInfo({
               value={form.propertyAddress}
               onChange={handleChange}
               placeholder="123 Main Street, Suburb, State, Postcode"
+              className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
+            />
+          </label>
+
+          <label className="block">
+            <div className="text-sm text-slate-700 mb-1">
+              Property Bio / Description
+            </div>
+            <textarea
+              name="propertyDetails"
+              value={form.propertyDetails}
+              onChange={handleChange}
+              placeholder="Brief description about the property, amenities, renovations, unique features..."
+              rows={4}
               className="w-full border border-slate-200 rounded-md px-3 py-2 text-sm bg-white"
             />
           </label>
