@@ -101,7 +101,7 @@ function Footer() {
                 <div className="text-left">
                   <div className="text-slate-200">Address</div>
                   <div className="text-slate-100">
-                    11/95 Bannister Road Canning Vale 6155
+                    1/95 Bannister Road Canning Vale 6155
                   </div>
                 </div>
               </li>

@@ -62,17 +62,23 @@ function AgentCard() {
         </div>
 
         {property.owner_phone && (
-          <button className="w-full bg-[#133a5c] hover:bg-[#0a2a47] text-white font-semibold py-2 rounded-lg text-sm flex items-center justify-center gap-2 mt-4">
+          <a
+            href={`tel:${property.owner_phone}`}
+            className="w-full bg-[#133a5c] hover:bg-[#0a2a47] text-white font-semibold py-2 rounded-lg text-sm flex items-center justify-center gap-2 mt-4"
+          >
             <FaPhoneAlt /> {property.owner_phone}
-          </button>
+          </a>
         )}
-        <button className="w-full border-2 border-[#133a5c] text-[#133a5c] font-semibold py-2 rounded-lg text-sm flex items-center justify-center gap-2 mb-2 mt-2">
+        {/* <button className="w-full border-2 border-[#133a5c] text-[#133a5c] font-semibold py-2 rounded-lg text-sm flex items-center justify-center gap-2 mb-2 mt-2">
           <MdSms /> Send Message
-        </button>
+        </button> */}
         {property.owner_email && (
-          <button className="w-full border-2 border-slate-200 text-slate-700 font-semibold py-2 rounded-lg text-sm flex items-center justify-center gap-2">
+          <a
+            href={`mailto:${property.owner_email}`}
+            className="w-full border-2 mt-2 border-slate-200 text-slate-700 font-semibold py-2 rounded-lg text-sm flex items-center justify-center gap-2 hover:bg-slate-50"
+          >
             <MdEmail /> {property.owner_email}
-          </button>
+          </a>
         )}
         <div className="flex flex-col gap-1 w-full mt-3">
           <div className="flex items-center justify-between text-xs text-slate-500">

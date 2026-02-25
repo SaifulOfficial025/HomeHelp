@@ -27,7 +27,7 @@ function Navbar() {
   return (
     <nav className="w-full bg-[#072A44] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-        <Link to="">
+        <Link to="/">
           <div className="flex items-center gap-3">
             <img src="/footerlogo.png" alt="HomeHelp" className="w-8 h-8" />
             <span className="font-bold text-lg">HomeHelp</span>

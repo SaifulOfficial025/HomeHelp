@@ -34,13 +34,6 @@ function PropertyOverview() {
           </div>
         </div>
 
-        {property.propertyDetails && (
-          <div className="text-slate-600 text-sm leading-relaxed mb-4 max-w-2xl">
-            {property.propertyDetails ||
-              "No bio ordescription available for this property."}
-          </div>
-        )}
-
         {property.unlock_price && (
           <div className="text-right mt-2">
             <div className="text-2xl text-slate-800">
@@ -50,6 +43,12 @@ function PropertyOverview() {
           </div>
         )}
       </div>
+      {property.propertyDetails && (
+        <div className="text-slate-600 text-sm leading-relaxed mb-4 max-w-2xl">
+          {property.propertyDetails ||
+            "No bio ordescription available for this property."}
+        </div>
+      )}
       <hr className="my-4 border-slate-200" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="flex flex-col items-center">
